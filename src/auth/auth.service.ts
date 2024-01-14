@@ -5,6 +5,7 @@ import * as bcrypt from "bcrypt";
 import { UserService } from '../user/user.service';
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
+
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
@@ -60,7 +61,7 @@ export class AuthService {
         phone: user.phone,
         firstname: user.firstname,
         lastname: user.lastname,
-        image: user.image
+        address: user.address
       })
     } catch (error) {
       console.error(error)
