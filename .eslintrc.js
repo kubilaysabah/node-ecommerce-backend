@@ -4,6 +4,10 @@ module.exports = {
     project: "tsconfig.json",
     tsconfigRootDir: __dirname,
     sourceType: "module",
+    ecmaVersion: 6,
+    ecmaFeatures: {
+      modules: true
+    }
   },
   plugins: ["@typescript-eslint/eslint-plugin"],
   extends: [
@@ -24,5 +28,6 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   },
 };
