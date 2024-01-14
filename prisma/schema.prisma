@@ -10,38 +10,145 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Banner {
+model Logs {
+  id        Int      @id @default(autoincrement())
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model CategoryImages {
+  id         Int        @id @default(autoincrement())
+  name       String
+  image      String
+  categoryId Int        @unique
+  category   Categories @relation(fields: [categoryId], references: [id])
+}
+
+model Banners {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
   url         String?
-  image       String?
+  image       String
 }
 
-model Category {
-  id          Int       @id @default(autoincrement())
+model Categories {
+  id          Int              @id @default(autoincrement())
+  code        String           @unique
+  url         String           @unique
   name        String
   description String?
-  image       String?
-  Product     Product[]
+  content     String?
+  images      CategoryImages[]
+  Product     Products[]
 }
 
-model Product {
-  id         Int      @id @default(autoincrement())
-  name       String
-  price      Float
-  quantity   Int
-  image      String
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+model ProductVariants {
+  id    Int    @id @default(autoincrement())
+  code  String @unique
+  name  String
+  value String
+}
+
+model ProductImages {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  image     String
+  productId Int
+  Product   Products @relation(fields: [productId], references: [id])
+}
+
+model Products {
+  id          Int             @id @default(autoincrement())
+  code        String          @unique
+  url         String          @unique
+  name        String
+  description String?
+  content     String?
+  price       Float
+  quantity    Int
+  rating      Float           @default(0)
+  images      ProductImages[]
+  category    Categories      @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  sellers     Sellers[]
+  Orders      Orders?         @relation(fields: [ordersId], references: [id])
+  ordersId    Int?
+}
+
+model Sellers {
+  id          Int        @id @default(autoincrement())
+  code        String     @unique
+  name        String
+  description String?
+  address     Addresses?
+  image       String
+  phone       String     @unique
+  email       String     @unique
+  rating      Float      @default(0)
+  Product     Products[]
+}
+
+model Addresses {
+  id       Int     @id @default(autoincrement())
+  name     String
+  address  String
+  phone    String
+  userId   Int     @unique
+  sellerId Int     @unique
+  Users    Users   @relation(fields: [userId], references: [id])
+  Sellers  Sellers @relation(fields: [sellerId], references: [id])
 }
 
 model Users {
-  id        Int     @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
+  image     String?
   firstname String
   lastname  String
-  phone     String  @unique
-  email     String  @unique
+  phone     String      @unique
+  email     String      @unique
   password  String
-  address   String?
+  addresses Addresses[]
+  orders    Orders[]
+  cards     Card[]
+}
+
+model Card {
+  id        Int      @id @default(autoincrement())
+  name      String
+  number    String
+  expiredAt String
+  cvv       String
+  userId    Int      @unique
+  Users     Users    @relation(fields: [userId], references: [id])
+  Orders    Orders[]
+}
+
+model Orders {
+  id       Int        @id @default(autoincrement())
+  code     String     @unique
+  status   Int        @default(0)
+  total    Float
+  userId   Int        @unique
+  cardId   Int        @unique
+  Products Products[]
+  card     Card?      @relation(fields: [cardId], references: [id])
+  Users    Users      @relation(fields: [userId], references: [id])
+}
+
+model Pages {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  content     String?
+  image       String?
+}
+
+model Posts {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  content     String?
+  image       String?
 }
