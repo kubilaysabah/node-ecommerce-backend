@@ -37,3 +37,10 @@ lerna-debug.log*
 # Prisma
 /prisma/migrations
 /prisma/*-journal
+
+# System Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
