@@ -9,9 +9,10 @@ import { LoginDTO } from "./dto/login.dto";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {
+  }
 
-  @Post()
+  @Post('register')
   register(@Body() registerDTO: RegisterDTO) {
     return this.authService.register(registerDTO);
   }
