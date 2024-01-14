@@ -16,12 +16,11 @@ model Logs {
   createdAt DateTime @default(now())
 }
 
-model CategoryImages {
-  id         Int        @id @default(autoincrement())
-  name       String
-  image      String
-  categoryId Int        @unique
-  category   Categories @relation(fields: [categoryId], references: [id])
+model Addresses {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+  phone   String
 }
 
 model Banners {
@@ -32,15 +31,26 @@ model Banners {
   image       String
 }
 
+model CategoryImages {
+  id           Int         @id @default(autoincrement())
+  name         String
+  image        String
+  Categories   Categories? @relation(fields: [categoriesId], references: [id])
+  categoriesId Int?
+}
+
 model Categories {
-  id          Int              @id @default(autoincrement())
-  code        String           @unique
-  url         String           @unique
-  name        String
-  description String?
-  content     String?
-  images      CategoryImages[]
-  Product     Products[]
+  id                      Int                        @id @default(autoincrement())
+  parent_id               Int?
+  code                    String                     @unique
+  url                     String                     @unique
+  name                    String
+  description             String?
+  content                 String?
+  images                  CategoryImages[]
+  ProductsCategories      ProductCategoryRelations[]
+  PostCategoryRelations   PostCategoryRelations?     @relation(fields: [postCategoryRelationsId], references: [id])
+  postCategoryRelationsId Int?
 }
 
 model ProductVariants {
@@ -51,90 +61,74 @@ model ProductVariants {
 }
 
 model ProductImages {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  name      String
-  image     String
-  productId Int
-  Product   Products @relation(fields: [productId], references: [id])
+  id                    Int                     @id @default(autoincrement())
+  code                  String                  @unique
+  name                  String
+  image                 String
+  ProductImageRelations ProductImageRelations[]
+}
+
+model Brands {
+  id                      Int                     @id @default(autoincrement())
+  code                    String                  @unique
+  name                    String
+  description             String?
+  image                   String
+  productBrandRelationsId Int?
+  ProductBrandRelations   ProductBrandRelations[]
 }
 
 model Products {
-  id          Int             @id @default(autoincrement())
-  code        String          @unique
-  url         String          @unique
-  name        String
-  description String?
-  content     String?
-  price       Float
-  quantity    Int
-  rating      Float           @default(0)
-  images      ProductImages[]
-  category    Categories      @relation(fields: [categoryId], references: [id])
-  categoryId  Int
-  sellers     Sellers[]
-  Orders      Orders?         @relation(fields: [ordersId], references: [id])
-  ordersId    Int?
+  id                      Int                        @id @default(autoincrement())
+  code                    String                     @unique
+  url                     String                     @unique
+  name                    String
+  description             String?
+  content                 String?
+  price                   Float
+  quantity                Int
+  rating                  Float                      @default(0)
+  ProductsCategories      ProductCategoryRelations[]
+  ProductOrderRelations   ProductOrderRelations[]
+  ProductSellerRelations  ProductSellerRelations[]
+  ProductImageRelations   ProductImageRelations[]
+  productBrandRelationsId Int?
+  ProductBrandRelations   ProductBrandRelations?     @relation(fields: [productBrandRelationsId], references: [id])
 }
 
 model Sellers {
-  id          Int        @id @default(autoincrement())
-  code        String     @unique
-  name        String
-  description String?
-  address     Addresses?
-  image       String
-  phone       String     @unique
-  email       String     @unique
-  rating      Float      @default(0)
-  Product     Products[]
-}
-
-model Addresses {
-  id       Int     @id @default(autoincrement())
-  name     String
-  address  String
-  phone    String
-  userId   Int     @unique
-  sellerId Int     @unique
-  Users    Users   @relation(fields: [userId], references: [id])
-  Sellers  Sellers @relation(fields: [sellerId], references: [id])
+  id                     Int                      @id @default(autoincrement())
+  code                   String                   @unique
+  name                   String
+  description            String?
+  image                  String
+  phone                  String                   @unique
+  email                  String                   @unique
+  rating                 Float                    @default(0)
+  ProductSellerRelations ProductSellerRelations[]
 }
 
 model Users {
-  id        Int         @id @default(autoincrement())
-  image     String?
-  firstname String
-  lastname  String
-  phone     String      @unique
-  email     String      @unique
-  password  String
-  addresses Addresses[]
-  orders    Orders[]
-  cards     Card[]
-}
-
-model Card {
-  id        Int      @id @default(autoincrement())
-  name      String
-  number    String
-  expiredAt String
-  cvv       String
-  userId    Int      @unique
-  Users     Users    @relation(fields: [userId], references: [id])
-  Orders    Orders[]
+  id                   Int                  @id @default(autoincrement())
+  image                String?
+  firstname            String
+  lastname             String
+  phone                String               @unique
+  email                String               @unique
+  password             String
+  userOrderRelationsId Int?
+  UserOrderRelations   UserOrderRelations[]
 }
 
 model Orders {
-  id       Int        @id @default(autoincrement())
-  code     String     @unique
-  status   Int        @default(0)
-  total    Float
-  userId   Int        @unique
-  cardId   Int        @unique
-  Products Products[]
-  card     Card?      @relation(fields: [cardId], references: [id])
-  Users    Users      @relation(fields: [userId], references: [id])
+  id                    Int                     @id @default(autoincrement())
+  code                  String                  @unique
+  status                Int                     @default(0)
+  total                 Float
+  userId                Int
+  ProductOrderRelations ProductOrderRelations[]
+  UserOrderRelations    UserOrderRelations?     @relation(fields: [userOrderRelationsId], references: [id])
+  userOrderRelationsId  Int?
 }
 
 model Pages {
@@ -146,9 +140,65 @@ model Pages {
 }
 
 model Posts {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String?
-  content     String?
-  image       String?
+  id                      Int                    @id @default(autoincrement())
+  title                   String
+  description             String?
+  content                 String?
+  image                   String?
+  PostCategoryRelations   PostCategoryRelations? @relation(fields: [postCategoryRelationsId], references: [id])
+  postCategoryRelationsId Int?
+}
+
+model ProductImageRelations {
+  id        Int             @id @default(autoincrement())
+  productId Int
+  image     ProductImages[]
+  Products  Products        @relation(fields: [productId], references: [id])
+}
+
+model ProductBrandRelations {
+  id        Int        @id @default(autoincrement())
+  productId Int
+  brandId   Int
+  brand     Brands     @relation(fields: [brandId], references: [id])
+  Products  Products[]
+}
+
+model ProductCategoryRelations {
+  id         Int          @id @default(autoincrement())
+  productId  Int
+  categoryId Int
+  Products   Products[]
+  Categories Categories[]
+}
+
+model ProductOrderRelations {
+  id        Int        @id @default(autoincrement())
+  productId Int
+  orderId   Int
+  Products  Products[]
+  Orders    Orders[]
+}
+
+model ProductSellerRelations {
+  id        Int        @id @default(autoincrement())
+  productId Int
+  sellerId  Int
+  Products  Products[]
+  Sellers   Sellers[]
+}
+
+model UserOrderRelations {
+  id     Int      @id @default(autoincrement())
+  userId Int
+  Users  Users    @relation(fields: [userId], references: [id])
+  Orders Orders[]
+}
+
+model PostCategoryRelations {
+  id         Int          @id @default(autoincrement())
+  postId     Int
+  categoryId Int
+  Posts      Posts[]
+  Categories Categories[]
 }
