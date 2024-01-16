@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException  } from "@nestjs/common";
+import {HttpException, Injectable, UnauthorizedException} from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcrypt";
 
@@ -27,7 +27,7 @@ export class AuthService {
     const match = await bcrypt.compare(password, findUser.password);
 
     if(!match) {
-      throw new Error('Invalid credentials');
+      throw new UnauthorizedException();
     }
 
     return findUser;
@@ -46,10 +46,8 @@ export class AuthService {
       });
 
     } catch (error) {
-      console.error(error)
+      throw new HttpException('', error)
     }
-
-    return 'hello'
   }
 
   async login(loginDTO: LoginDTO) {
@@ -57,14 +55,10 @@ export class AuthService {
       const user = await this.validateUser(loginDTO);
 
       return this.jwtService.sign({
-        email: user.email,
-        phone: user.phone,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        address: user.address
+        user,
       })
     } catch (error) {
-      console.error(error)
+      throw new UnauthorizedException();
     }
   }
 }
