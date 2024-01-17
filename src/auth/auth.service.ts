@@ -4,6 +4,7 @@ import * as bcrypt from "bcrypt";
 import { Users } from '@prisma/client'
 
 import { UserService } from '../user/user.service';
+import { RoleService } from '../role/role.service';
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
 
@@ -14,6 +15,7 @@ export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private userService: UserService,
+    private roleService: RoleService,
     private jwtService: JwtService
   ) {
   }
@@ -21,7 +23,9 @@ export class AuthService {
   async validateUser({ email, password } : LoginDTO) {
     const findUser = await this.userService.findOne({ email });
 
-    if(!findUser) {
+    const role = await this.roleService.findOne(findUser.roleId)
+
+    if(!findUser || !role || role.name !== 'admin') {
       throw new UnauthorizedException();
     }
 
