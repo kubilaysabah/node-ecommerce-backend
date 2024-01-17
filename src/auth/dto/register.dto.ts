@@ -1,7 +1,27 @@
+import { IsInt, IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator';
+
 export class RegisterDTO {
-  readonly firstname: string;
-  readonly lastname: string;
-  readonly phone: string;
-  readonly email: string;
-  readonly password: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @Length(3, 20)
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
+  @IsPhoneNumber()
+  phone: string;
+
+  @IsNotEmpty()
+  @Length(3, 20)
+  firstname: string;
+
+  @IsNotEmpty()
+  @Length(3, 20)
+  lastname: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  role: number;
 }
