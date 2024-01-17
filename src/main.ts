@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 
 (async (): Promise<void> => {
@@ -7,5 +8,6 @@ import { AppModule } from "./app.module";
     origin: "http://localhost:4200",
   })
   app.setGlobalPrefix("api");
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 })();

@@ -108,6 +108,12 @@ model Sellers {
   ProductSellerRelations ProductSellerRelations[]
 }
 
+model Roles {
+  id    Int     @id @default(autoincrement())
+  name  String
+  Users Users[]
+}
+
 model Users {
   id                   Int                  @id @default(autoincrement())
   image                String?
@@ -115,6 +121,8 @@ model Users {
   lastname             String
   phone                String               @unique
   email                String               @unique
+  roleId               Int
+  role                 Roles                @relation(fields: [roleId], references: [id])
   password             String
   userOrderRelationsId Int?
   UserOrderRelations   UserOrderRelations[]
