@@ -1,6 +1,7 @@
 import {HttpException, Injectable, UnauthorizedException} from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcrypt";
+import { Users } from '@prisma/client'
 
 import { UserService } from '../user/user.service';
 import { RegisterDTO } from "./dto/register.dto";
@@ -18,7 +19,7 @@ export class AuthService {
   }
 
   async validateUser({ email, password } : LoginDTO) {
-    const findUser = await this.userService.findOne(email);
+    const findUser = await this.userService.findOne({ email });
 
     if(!findUser) {
       throw new UnauthorizedException();
@@ -33,15 +34,23 @@ export class AuthService {
     return findUser;
   }
 
-  async register(registerDTO: RegisterDTO) {
+  async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
 
     try {
-      const hash = await bcrypt.hash(registerDTO.password, 10);
+      const hash = await bcrypt.hash(password, 10);
 
       return this.prismaService.users.create({
         data: {
-          ...registerDTO,
-          password: hash
+          email,
+          phone,
+          firstname,
+          lastname,
+          password: hash,
+          role: {
+            connect: {
+                id: role
+            }
+          }
         }
       });
 
