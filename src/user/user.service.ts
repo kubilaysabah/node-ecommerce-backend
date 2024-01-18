@@ -3,7 +3,6 @@ import { Users } from '@prisma/client'
 
 import { PrismaService } from '../prisma.service'
 import { FindUserParams } from './dto/find-user.dto'
-import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
@@ -19,31 +18,33 @@ export class UserService {
     })
   }
 
-  create({ name }: CreateUserDto) {
-    return this.prismaService.roles.create({
-      data: {
-        name
-      }
-    });
-  }
-
   findAll() {
-    return this.prismaService.roles.findMany();
+    return this.prismaService.users.findMany();
   }
 
-  update(id:number, { name }: UpdateUserDto) {
-    return this.prismaService.roles.update({
+  update(id:number, { role, email, image, lastname, phone, password, firstname }: UpdateUserDto) {
+    return this.prismaService.users.update({
       where: {
         id,
       },
       data: {
-        name
+        firstname,
+        lastname,
+        email,
+        phone,
+        password,
+        image,
+        role: {
+          connect: {
+            id: role
+          }
+        }
       }
     })
   }
 
   remove(id: number) {
-    return this.prismaService.roles.delete({
+    return this.prismaService.users.delete({
       where: {
         id
       }

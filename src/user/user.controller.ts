@@ -8,12 +8,12 @@ export class UserController {
 
   @Get()
   findOne(@Query('email') email: string, @Query('id') id: string) {
-    return this.userService.findOne({ email, id });
-  }
 
-  @Get('list')
-  findAll() {
-    return this.userService.findAll();
+    if(!email && !id) {
+        return this.userService.findAll();
+    }
+
+    return this.userService.findOne({ email, id })
   }
 
   @Patch(':id')
