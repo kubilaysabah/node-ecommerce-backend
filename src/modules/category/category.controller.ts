@@ -3,7 +3,6 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 import {ApiTags} from "@nestjs/swagger";
 import { Express } from 'express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
 
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -12,8 +11,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 const storage = diskStorage({
   destination: './uploads',
   filename: (req, file, cb) => {
-    const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-    return cb(null, `${randomName}${extname(file.originalname)}`)
+    return cb(null, file.originalname.toLowerCase())
   }
 })
 
@@ -25,6 +23,10 @@ export class CategoryController {
   @Post()
   @UseInterceptors(FilesInterceptor('images', 4, { storage }))
   create(@Body() createCategoryDto: CreateCategoryDto, @UploadedFiles(new ParseFilePipe({
+    validators: [
+        new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 3 }),
+        new FileTypeValidator({ fileType: 'image/jpeg' })
+    ]
   })) files: Array<Express.Multer.File>) {
 
     const images = files.map(file => ({
