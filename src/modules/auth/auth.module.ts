@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 
-import { PrismaService } from '../../prisma.service'
+import { PrismaService } from '../../services/prisma.service'
 import { UserService } from '../user/user.service'
 import { RoleService } from '../role/role.service'
 
