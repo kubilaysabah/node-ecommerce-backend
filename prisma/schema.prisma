@@ -59,7 +59,6 @@ model ProductVariants {
 
 model ProductImages {
   id                    Int                     @id @default(autoincrement())
-  code                  String                  @unique
   name                  String
   image                 String
   ProductImageRelations ProductImageRelations[]
@@ -76,21 +75,21 @@ model Brands {
 }
 
 model Products {
-  id                      Int                        @id @default(autoincrement())
-  code                    String                     @unique
-  url                     String                     @unique
-  name                    String
-  description             String?
-  content                 String?
-  price                   Float
-  quantity                Int
-  rating                  Float                      @default(0)
-  ProductsCategories      ProductCategoryRelations[]
-  ProductOrderRelations   ProductOrderRelations[]
-  ProductSellerRelations  ProductSellerRelations[]
-  ProductImageRelations   ProductImageRelations[]
-  productBrandRelationsId Int?
-  ProductBrandRelations   ProductBrandRelations?     @relation(fields: [productBrandRelationsId], references: [id])
+  id                       Int                        @id @default(autoincrement())
+  code                     String                     @unique
+  url                      String                     @unique
+  name                     String
+  description              String?
+  content                  String?
+  price                    Float
+  quantity                 Int
+  rating                   Float                      @default(0)
+  ProductCategoryRelations ProductCategoryRelations[]
+  ProductOrderRelations    ProductOrderRelations[]
+  ProductSellerRelations   ProductSellerRelations[]
+  ProductImageRelations    ProductImageRelations[]
+  productBrandRelationsId  Int?
+  ProductBrandRelations    ProductBrandRelations?     @relation(fields: [productBrandRelationsId], references: [id])
 }
 
 model Sellers {
@@ -156,7 +155,7 @@ model Posts {
 model ProductImageRelations {
   id        Int             @id @default(autoincrement())
   productId Int
-  image     ProductImages[]
+  images    ProductImages[]
   Products  Products        @relation(fields: [productId], references: [id])
 }
 
