@@ -32,25 +32,22 @@ model Banners {
 }
 
 model CategoryImages {
-  id           Int         @id @default(autoincrement())
-  name         String
-  image        String
-  Categories   Categories? @relation(fields: [categoriesId], references: [id])
-  categoriesId Int?
+  id         Int          @id @default(autoincrement())
+  name       String
+  image      String
+  Categories Categories[]
 }
 
 model Categories {
-  id                      Int                        @id @default(autoincrement())
-  parent_id               Int?
-  code                    String                     @unique
-  url                     String                     @unique
-  name                    String
-  description             String?
-  content                 String?
-  images                  CategoryImages[]
-  ProductsCategories      ProductCategoryRelations[]
-  PostCategoryRelations   PostCategoryRelations?     @relation(fields: [postCategoryRelationsId], references: [id])
-  postCategoryRelationsId Int?
+  id                    Int                        @id @default(autoincrement())
+  parent_id             Int?
+  url                   String                     @unique
+  name                  String
+  description           String?
+  content               String?
+  images                CategoryImages[]
+  ProductsCategories    ProductCategoryRelations[]
+  PostCategoryRelations PostCategoryRelations[]
 }
 
 model ProductVariants {
@@ -148,13 +145,12 @@ model Pages {
 }
 
 model Posts {
-  id                      Int                    @id @default(autoincrement())
-  title                   String
-  description             String?
-  content                 String?
-  image                   String?
-  PostCategoryRelations   PostCategoryRelations? @relation(fields: [postCategoryRelationsId], references: [id])
-  postCategoryRelationsId Int?
+  id                    Int                     @id @default(autoincrement())
+  title                 String
+  description           String?
+  content               String?
+  image                 String?
+  PostCategoryRelations PostCategoryRelations[]
 }
 
 model ProductImageRelations {
