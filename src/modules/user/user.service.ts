@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Users } from '@prisma/client'
 
-import { PrismaService } from '../../services/prisma.service'
+import { PrismaService } from '../../shared/prisma.service'
 import { FindUserParams } from './dto/find-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 

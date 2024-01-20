@@ -8,7 +8,7 @@ import { RoleService } from '../role/role.service';
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
 
-import { PrismaService } from '../../services/prisma.service'
+import { PrismaService } from '../../shared/prisma.service'
 
 @Injectable()
 export class AuthService {
