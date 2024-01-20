@@ -10,14 +10,14 @@ export class CategoryService {
   create(createCategoryDto: CreateCategoryDto) {
     return this.prismaService.categories.create({
       data: {
-        // parent_id: createCategoryDto.parent_id,
+        parent_id: createCategoryDto.parent_id,
         name: createCategoryDto.name,
         description: createCategoryDto.description,
         content: createCategoryDto.content,
         url: createCategoryDto.url,
-        // images: {
-        //   create: createCategoryDto.images
-        // }
+        images: {
+          create: createCategoryDto.images
+        }
       }
     });
   }

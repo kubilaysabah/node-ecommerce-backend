@@ -12,21 +12,19 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('images', 4))
+  @UseInterceptors(FilesInterceptor('images', 4, { dest: './uploads' }))
   create(@Body() createCategoryDto: CreateCategoryDto, @UploadedFiles(new ParseFilePipe({
   })) files: Array<Express.Multer.File>) {
 
     const images = files.map(file => ({
       name: file.originalname,
-      image: file.buffer.toString(),
+      image: file.path,
     }));
 
-    return images;
-
-    // return this.categoryService.create({
-    //   ...createCategoryDto,
-    //   // images
-    // });
+    return this.categoryService.create({
+      ...createCategoryDto,
+      images
+    });
   }
 
   @Get()
