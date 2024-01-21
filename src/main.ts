@@ -19,8 +19,7 @@ import { NotFoundInterceptor } from './interceptors/not-found.interceptor'
       .setTitle('E-Commerce API')
       .setDescription('The E-Commerce API description')
       .setVersion('1.0')
-      .addServer('http://localhost:3000/api/', 'Local Environment')
-      .addTag('e-commerce')
+      .addServer('http://localhost:3000/api/docs/', 'Local Environment')
       .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
