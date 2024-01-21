@@ -9,9 +9,10 @@ import { UserModule } from '../user/user.module';
 import { RoleModule } from '../role/role.module';
 import { CategoryModule } from '../category/category.module';
 import { ProductModule } from '../product/product.module'
+import { BrandModule } from '../brand/brand.module'
 
 @Module({
-  imports: [SharedModule, AuthModule, UserModule, RoleModule, CategoryModule, ProductModule],
+  imports: [SharedModule, AuthModule, UserModule, RoleModule, CategoryModule, ProductModule, BrandModule],
   controllers: [AppController],
   providers: [AppService],
 })
