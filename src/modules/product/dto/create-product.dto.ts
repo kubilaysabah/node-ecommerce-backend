@@ -33,24 +33,14 @@ export class ProductImageRelationsDto {
   images: ProductImageDto[];
 }
 
-export class ProductOrderRelationsDto {
+export class ProductBrandRelationsDto {
   @IsNotEmpty()
   @IsInt()
   productId: number;
 
   @IsNotEmpty()
   @IsInt()
-  orderId: number;
-}
-
-export class ProductSellerRelationsDto {
-  @IsNotEmpty()
-  @IsInt()
-  productId: number;
-
-  @IsNotEmpty()
-  @IsInt()
-  sellerId: number;
+  brandId: number;
 }
 
 export class CreateProductDto {
@@ -93,17 +83,8 @@ export class CreateProductDto {
   ProductCategoryRelations?: ProductCategoryRelationsDto[];
 
   @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductOrderRelationsDto)
-  ProductOrderRelations?: ProductOrderRelationsDto[];
-
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductSellerRelationsDto)
-  ProductSellerRelations?: ProductSellerRelationsDto[];
+  @Type(() => ProductCategoryRelationsDto)
+  ProductBrandRelations?: ProductBrandRelationsDto;
 
   @IsOptional()
   @IsArray()
