@@ -16,10 +16,10 @@ import { NotFoundInterceptor } from './interceptors/not-found.interceptor'
   app.useGlobalInterceptors(new NotFoundInterceptor());
 
   const config = new DocumentBuilder()
-      .setTitle('E-Commerce API')
+      .setTitle('E-Commerce API Document')
       .setDescription('The E-Commerce API description')
       .setVersion('1.0')
-      .addServer('http://localhost:3000/api/docs/', 'Local Environment')
+      .addServer('http://localhost:3000/api/', 'Local Environment')
       .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
