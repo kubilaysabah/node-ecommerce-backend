@@ -38,7 +38,7 @@ export class ProductService {
   }
 
   findOne(id: number) {
-    return this.prismaService.products.findFirst({
+    return this.prismaService.products.findUnique({
       where: {
         id: id
       },

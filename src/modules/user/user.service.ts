@@ -11,7 +11,7 @@ export class UserService {
   constructor(private prismaService: PrismaService) {}
 
   findOne({ email, id }: FindUserParams): Promise<Users> {
-    return this.prismaService.users.findFirst({
+    return this.prismaService.users.findUnique({
       where: {
         ...(id ? { id: +id } : { email })
       }

@@ -23,18 +23,45 @@ export class CategoryService {
   }
 
   findAll() {
-    return `This action returns all category`;
+    return this.prismaService.categories.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.prismaService.categories.findUnique({
+      where: {
+        id,
+      }
+    })
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+    return this.prismaService.categories.update({
+      where: {
+        id,
+      },
+      data: {
+        parent_id: updateCategoryDto.parent_id,
+        name: updateCategoryDto.name,
+        description: updateCategoryDto.description,
+        content: updateCategoryDto.content,
+        url: updateCategoryDto.url,
+        images: {
+          update: {
+            data: updateCategoryDto.images,
+            where: {
+              id,
+            }
+          },
+        }
+      }
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.prismaService.categories.delete({
+      where: {
+        id,
+      }
+    });
   }
 }

@@ -20,7 +20,7 @@ export class RoleService {
   }
 
   findOne(id: number) {
-    return this.prisma.roles.findFirst({
+    return this.prisma.roles.findUnique({
       where: {
         id,
       }

@@ -23,7 +23,7 @@ export class BrandService {
   }
 
   findOne(id: number) {
-    return this.prismaService.brands.findFirst({
+    return this.prismaService.brands.findUnique({
       where: {
         id
       }
