@@ -40,6 +40,12 @@ export class AuthService {
 
   async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
 
+    const findUser = await this.userService.findOne({ email });
+
+    if(findUser) {
+      throw new HttpException('User already exists', 409);
+    }
+
     try {
       const hash = await bcrypt.hash(password, 10);
 

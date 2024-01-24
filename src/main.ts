@@ -10,7 +10,7 @@ import { NotFoundInterceptor } from './interceptors/not-found.interceptor'
 
   /* CORS */
   app.enableCors({
-    origin: "http://localhost:4200",
+    origin: "*",
   })
 
   /* Prefix */
@@ -28,10 +28,9 @@ import { NotFoundInterceptor } from './interceptors/not-found.interceptor'
       .setTitle('E-Commerce API Document')
       .setDescription('The E-Commerce API description')
       .setVersion('1.0')
-      .addServer('http://localhost:3000/api/', 'Local Environment')
       .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('', app, document);
 
   await app.listen(3000);
 })();
