@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from "@nestjs/common";
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from '../../shared/prisma.service'
@@ -8,60 +8,80 @@ export class CategoryService {
   constructor(private prismaService: PrismaService) {
   }
   create(createCategoryDto: CreateCategoryDto) {
-    return this.prismaService.categories.create({
-      data: {
-        parent_id: createCategoryDto.parent_id,
-        name: createCategoryDto.name,
-        description: createCategoryDto.description,
-        content: createCategoryDto.content,
-        url: createCategoryDto.url,
-        images: {
-          create: createCategoryDto.images
+    try {
+      return this.prismaService.categories.create({
+        data: {
+          parent_id: createCategoryDto.parent_id,
+          name: createCategoryDto.name,
+          description: createCategoryDto.description,
+          content: createCategoryDto.content,
+          url: createCategoryDto.url,
+          images: {
+            create: createCategoryDto.images
+          }
         }
-      }
-    });
+      });
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   findAll() {
-    return this.prismaService.categories.findMany();
+    try {
+      return this.prismaService.categories.findMany();
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   findOne(id: number) {
-    return this.prismaService.categories.findUnique({
-      where: {
-        id,
-      }
-    })
+    try {
+      return this.prismaService.categories.findUnique({
+        where: {
+          id,
+        }
+      })
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return this.prismaService.categories.update({
-      where: {
-        id,
-      },
-      data: {
-        parent_id: updateCategoryDto.parent_id,
-        name: updateCategoryDto.name,
-        description: updateCategoryDto.description,
-        content: updateCategoryDto.content,
-        url: updateCategoryDto.url,
-        images: {
-          update: {
-            data: updateCategoryDto.images,
-            where: {
-              id,
-            }
-          },
+    try {
+      return this.prismaService.categories.update({
+        where: {
+          id,
+        },
+        data: {
+          parent_id: updateCategoryDto.parent_id,
+          name: updateCategoryDto.name,
+          description: updateCategoryDto.description,
+          content: updateCategoryDto.content,
+          url: updateCategoryDto.url,
+          images: {
+            update: {
+              data: updateCategoryDto.images,
+              where: {
+                id,
+              }
+            },
+          }
         }
-      }
-    })
+      })
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   remove(id: number) {
-    return this.prismaService.categories.delete({
-      where: {
-        id,
-      }
-    });
+    try {
+      return this.prismaService.categories.delete({
+        where: {
+          id,
+        }
+      });
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 }

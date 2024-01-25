@@ -65,7 +65,7 @@ export class AuthService {
       });
 
     } catch (error) {
-      throw new HttpException('', error)
+      throw new HttpException(error.message, error.status)
     }
   }
 

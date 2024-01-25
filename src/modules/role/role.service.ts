@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from "@nestjs/common";
 import { PrismaService } from '../../shared/prisma.service'
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -8,41 +8,61 @@ export class RoleService {
   constructor(private prisma: PrismaService) {
   }
   create({ name }: CreateRoleDto) {
-    return this.prisma.roles.create({
-      data: {
-        name
-      }
-    });
+    try {
+      return this.prisma.roles.create({
+        data: {
+          name
+        }
+      });
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   findAll() {
-    return this.prisma.roles.findMany();
+    try {
+      return this.prisma.roles.findMany();
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   findOne(id: number) {
-    return this.prisma.roles.findUnique({
-      where: {
-        id,
-      }
-    })
+    try {
+      return this.prisma.roles.findUnique({
+        where: {
+          id,
+        }
+      })
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   update(id: number, { name }: UpdateRoleDto) {
-    return this.prisma.roles.update({
-      where: {
-        id,
-      },
-      data: {
-        name
-      }
-    })
+    try {
+      return this.prisma.roles.update({
+        where: {
+          id,
+        },
+        data: {
+          name
+        }
+      })
+    } catch(error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   remove(id: number) {
-    return this.prisma.roles.delete({
-      where: {
-        id
-      }
-    })
+    try {
+      return this.prisma.roles.delete({
+        where: {
+          id
+        }
+      })
+    } catch (error) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 }
