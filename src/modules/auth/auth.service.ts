@@ -3,12 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcrypt";
 import { Users } from '@prisma/client'
 
-import { UserService } from '../user/user.service';
-import { RoleService } from '../role/role.service';
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
 
-import { PrismaService } from '../../shared/prisma.service'
+import { UserService } from '@modules/user/user.service';
+import { RoleService } from '@modules/role/role.service';
+
+import { PrismaService } from '@shared/prisma.service'
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
 
     const role = await this.roleService.findOne(findUser.roleId)
 
-    if(!findUser || !role || role.name !== 'admin') {
+    if(!findUser || !role) {
       throw new UnauthorizedException();
     }
 

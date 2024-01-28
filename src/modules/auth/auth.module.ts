@@ -4,8 +4,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 
-import { UserService } from '../user/user.service'
-import { RoleService } from '../role/role.service'
+import { UserService } from '@modules/user/user.service'
+import { RoleService } from '@modules/role/role.service'
 
 @Module({
   imports: [

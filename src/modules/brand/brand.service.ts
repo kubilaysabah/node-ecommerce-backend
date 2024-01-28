@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from "@nestjs/common";
-import { PrismaService } from '../../shared/prisma.service'
+import { PrismaService } from '@shared/prisma.service'
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 

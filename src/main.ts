@@ -2,8 +2,8 @@ import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from "./app.module";
-import { LoggingInterceptor } from './interceptors/logging.interceptor'
-import { NotFoundInterceptor } from './interceptors/not-found.interceptor'
+import { LoggingInterceptor } from '@interceptors/logging.interceptor'
+import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 
 (async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
