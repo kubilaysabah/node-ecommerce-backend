@@ -2,7 +2,7 @@ import {
   Controller,
   Post,
   Body,
-  UseGuards,
+  UseGuards, Request
 } from "@nestjs/common";
 import { ApiTags } from '@nestjs/swagger';
 
@@ -25,7 +25,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Body() loginDTO: LoginDTO) {
+  login(@Request() req, @Body() loginDTO: LoginDTO){
     return this.authService.login(loginDTO);
   }
 }
