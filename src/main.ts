@@ -1,12 +1,28 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as passport from 'passport'
+import * as session from 'express-session'
+
+// Modules
 import { AppModule } from "./app.module";
+
+// Interceptors
 import { LoggingInterceptor } from '@interceptors/logging.interceptor'
 import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 
 (async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
+
+  app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   /* CORS */
   app.enableCors({
