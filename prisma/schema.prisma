@@ -68,7 +68,7 @@ model Brands {
   id                      Int                     @id @default(autoincrement())
   name                    String
   description             String?
-  image                   String
+  image                   String?
   productBrandRelationsId Int?
   ProductBrandRelations   ProductBrandRelations[]
 }

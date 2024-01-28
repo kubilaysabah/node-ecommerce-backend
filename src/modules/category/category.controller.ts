@@ -1,4 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  UseGuards
+} from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import {ApiTags} from "@nestjs/swagger";
 import { Express } from 'express';
@@ -7,6 +21,7 @@ import { diskStorage } from 'multer';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { AuthenticatedGuard } from "@guards/authenticated.guard";
 
 const storage = diskStorage({
   destination: './uploads',
@@ -20,6 +35,7 @@ const storage = diskStorage({
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @UseGuards(AuthenticatedGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('images', 4, { storage }))
   create(@Body() createCategoryDto: CreateCategoryDto, @UploadedFiles(new ParseFilePipe({
@@ -40,21 +56,25 @@ export class CategoryController {
     });
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Get()
   findAll() {
     return this.categoryService.findAll();
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);

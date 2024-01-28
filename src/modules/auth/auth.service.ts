@@ -1,6 +1,5 @@
 import {HttpException, Injectable, UnauthorizedException} from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from "bcrypt";
 import { Users } from '@prisma/client'
 
 import { RegisterDTO } from "./dto/register.dto";
@@ -10,6 +9,7 @@ import { UserService } from '@modules/user/user.service';
 import { RoleService } from '@modules/role/role.service';
 
 import { PrismaService } from '@shared/prisma.service'
+import { ValidateUserEntity } from "@modules/auth/entities/register.entity";
 
 @Injectable()
 export class AuthService {
@@ -21,22 +21,21 @@ export class AuthService {
   ) {
   }
 
-  async validateUser({ email, password } : LoginDTO) {
-    const findUser = await this.userService.findOne({ email });
+  async validateUser({ email, password } : LoginDTO): Promise<ValidateUserEntity | null> {
+    const user = await this.userService.findOne({ email });
 
-    const role = await this.roleService.findOne(findUser.roleId)
-
-    if(!findUser || !role) {
-      throw new UnauthorizedException();
+    if(user && user.password === password) {
+      return {
+        email: user.email,
+        phone: user.phone,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        image: user.image,
+        id: user.id,
+      }
     }
 
-    const match = await bcrypt.compare(password, findUser.password);
-
-    if(!match) {
-      throw new UnauthorizedException();
-    }
-
-    return findUser;
+    return null;
   }
 
   async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
@@ -48,15 +47,13 @@ export class AuthService {
     }
 
     try {
-      const hash = await bcrypt.hash(password, 10);
-
       return this.prismaService.users.create({
         data: {
           email,
           phone,
           firstname,
           lastname,
-          password: hash,
+          password,
           role: {
             connect: {
                 id: role

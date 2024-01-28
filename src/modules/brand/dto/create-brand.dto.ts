@@ -13,7 +13,7 @@ export class CreateBrandDto {
 	description?: string;
 
 	@ApiProperty()
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	image: string;
 }
