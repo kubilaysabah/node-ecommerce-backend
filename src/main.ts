@@ -41,10 +41,11 @@ import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 
   /* Swagger */
   const config = new DocumentBuilder()
-      .setTitle('E-Commerce API Document')
-      .setDescription('The E-Commerce API description')
-      .setVersion('1.0')
-      .build();
+    .setTitle('E-Commerce API Document')
+    .setDescription('The E-Commerce API description')
+    .setVersion('1.0')
+    .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
 

@@ -30,8 +30,8 @@ const storage = diskStorage({
   }
 })
 
-@ApiTags('category')
-@Controller('category')
+@ApiTags('admin/category')
+@Controller('admin/category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

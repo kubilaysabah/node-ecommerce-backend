@@ -4,8 +4,8 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto'
 import { AuthenticatedGuard } from "@guards/authenticated.guard";
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('admin/user')
+@Controller('admin/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

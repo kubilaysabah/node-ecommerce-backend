@@ -6,8 +6,8 @@ import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 
-@ApiTags('role')
-@Controller('role')
+@ApiTags('admin/role')
+@Controller('admin/role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 

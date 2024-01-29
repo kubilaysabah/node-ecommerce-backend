@@ -6,8 +6,8 @@ import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import { AuthenticatedGuard } from '@guards/authenticated.guard';
 
-@ApiTags('brand')
-@Controller('brand')
+@ApiTags('admin/brand')
+@Controller('admin/brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
