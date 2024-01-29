@@ -5,11 +5,11 @@ import { Users } from '@prisma/client'
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
 
-import { UserService } from '@modules/user/user.service';
-import { RoleService } from '@modules/role/role.service';
+import { UserService } from '@admin/user/user.service';
+import { RoleService } from '@admin/role/role.service';
 
 import { PrismaService } from '@shared/prisma.service'
-import { ValidateUserEntity } from "@modules/auth/entities/register.entity";
+import { ValidateUserEntity } from "@auth/entities/register.entity";
 
 @Injectable()
 export class AuthService {

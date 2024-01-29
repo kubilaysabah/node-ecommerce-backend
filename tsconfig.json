@@ -18,10 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@strategies/*": ["./src/strategies/*"],
       "@guards/*": ["./src/guards/*"],
       "@interceptors/*": ["./src/interceptors/*"],
       "@modules/*": ["./src/modules/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@admin/*": ["./src/modules/admin/*"],
+      "@auth/*": ["./src/modules/auth/*"]
     }
   }
 }

@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
 import { ApiTags } from '@nestjs/swagger'
+import { AuthenticatedGuard } from "@guards/authenticated.guard";
 
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AuthenticatedGuard } from "@guards/authenticated.guard";
 
 @ApiTags('product')
 @Controller('product')

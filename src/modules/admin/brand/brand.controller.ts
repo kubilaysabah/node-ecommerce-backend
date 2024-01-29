@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger'
+
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import { ApiTags } from '@nestjs/swagger'
 import { AuthenticatedGuard } from '@guards/authenticated.guard';
 
 @ApiTags('brand')

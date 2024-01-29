@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from "./auth.service";
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
-import { LocalAuthGuard } from "./local-auth.guard";
+import { LocalAuthGuard } from "@guards/local-auth.guard";
 
 @ApiTags('auth')
 @Controller('auth')

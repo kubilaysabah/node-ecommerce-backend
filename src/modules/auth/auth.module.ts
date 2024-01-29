@@ -6,13 +6,11 @@ import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 
 // Strategies
-import { LocalStrategy } from "@modules/auth/local.strategy";
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from '@strategies/jwt.strategy';
 
 // Other Services
-import { UserService } from '@modules/user/user.service'
-import { RoleService } from '@modules/role/role.service'
-import { SessionSerializer } from '@modules/auth/session.serializer'
+import { UserService } from '@admin/user/user.service'
+import { RoleService } from '@admin/role/role.service'
 
 @Module({
   imports: [
@@ -20,11 +18,10 @@ import { SessionSerializer } from '@modules/auth/session.serializer'
       secret: process.env.SECRET_KEY,
       signOptions: { expiresIn: '60s' }
     }),
-    PassportModule.register({
-      session: true
-    })
+    PassportModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, RoleService, LocalStrategy, JwtStrategy, SessionSerializer],
+  providers: [AuthService, UserService, RoleService, JwtStrategy],
+  exports: [AuthService]
 })
 export class AuthModule {}

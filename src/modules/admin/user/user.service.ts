@@ -14,7 +14,8 @@ export class UserService {
     try {
       return this.prismaService.users.findUnique({
         where: {
-          ...(id ? { id: +id } : { email })
+          email,
+          id: +id,
         }
       })
     } catch (error) {
