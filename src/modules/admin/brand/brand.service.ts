@@ -1,12 +1,11 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from '@nestjs/common'
 import { PrismaService } from '@shared/prisma.service'
-import { CreateBrandDto } from './dto/create-brand.dto';
-import { UpdateBrandDto } from './dto/update-brand.dto';
+import { CreateBrandDto } from './dto/create-brand.dto'
+import { UpdateBrandDto } from './dto/update-brand.dto'
 
 @Injectable()
 export class BrandService {
-  constructor(private prismaService: PrismaService) {
-  }
+  constructor(private prismaService: PrismaService) {}
 
   create({ name, description, image }: CreateBrandDto) {
     try {
@@ -14,8 +13,8 @@ export class BrandService {
         data: {
           name,
           description,
-          image
-        }
+          image,
+        },
       })
     } catch (error) {
       throw new HttpException(error.message, error.status)
@@ -24,8 +23,8 @@ export class BrandService {
 
   findAll() {
     try {
-      return this.prismaService.brands.findMany();
-    } catch(error) {
+      return this.prismaService.brands.findMany()
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -34,9 +33,9 @@ export class BrandService {
     try {
       return this.prismaService.brands.findUnique({
         where: {
-          id
-        }
-      });
+          id,
+        },
+      })
     } catch (error) {
       throw new HttpException(error.message, error.status)
     }
@@ -51,10 +50,10 @@ export class BrandService {
         data: {
           name,
           description,
-          image
-        }
+          image,
+        },
       })
-    } catch(error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -63,10 +62,10 @@ export class BrandService {
     try {
       return this.prismaService.brands.delete({
         where: {
-          id
-        }
-      });
-    } catch(error) {
+          id,
+        },
+      })
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }

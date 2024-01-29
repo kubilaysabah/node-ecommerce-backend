@@ -1,114 +1,114 @@
 import { IsString, IsNotEmpty, IsOptional, IsInt, IsArray, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer';
-import { ApiProperty } from "@nestjs/swagger";
+import { Type } from 'class-transformer'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class ProductCategoryRelationsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  productId: number;
+  productId: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  categoryId: number;
+  categoryId: number
 }
 
 export class ProductImageDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  image: string;
+  image: string
 }
 
 export class ProductImageRelationsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  productId: number;
+  productId: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductImageDto)
-  images: ProductImageDto[];
+  images: ProductImageDto[]
 }
 
 export class ProductBrandRelationsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  productId: number;
+  productId: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  brandId: number;
+  brandId: number
 }
 
 export class CreateProductDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  code: string;
+  code: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  url: string;
+  url: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string
 
   @ApiProperty()
   @IsOptional()
   @IsString()
-  description?: string;
+  description?: string
 
   @ApiProperty()
   @IsOptional()
   @IsString()
-  content?: string;
+  content?: string
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  price: number;
+  price: number
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  quantity: number;
+  quantity: number
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  rating: number;
+  rating: number
 
   @ApiProperty()
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductCategoryRelationsDto)
-  ProductCategoryRelations?: ProductCategoryRelationsDto[];
+  ProductCategoryRelations?: ProductCategoryRelationsDto[]
 
   @ApiProperty()
   @IsOptional()
   @Type(() => ProductCategoryRelationsDto)
-  ProductBrandRelations?: ProductBrandRelationsDto;
+  ProductBrandRelations?: ProductBrandRelationsDto
 
   @ApiProperty()
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductImageRelationsDto)
-  ProductImageRelations?: ProductImageRelationsDto[];
+  ProductImageRelations?: ProductImageRelationsDto[]
 }

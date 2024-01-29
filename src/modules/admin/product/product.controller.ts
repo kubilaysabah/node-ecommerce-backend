@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { AuthenticatedGuard } from "@guards/authenticated.guard";
+import { AuthenticatedGuard } from '@guards/authenticated.guard'
 
-import { ProductService } from './product.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductService } from './product.service'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 
 @ApiTags('admin/product')
 @Controller('admin/product')
@@ -14,30 +14,30 @@ export class ProductController {
   @UseGuards(AuthenticatedGuard)
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+    return this.productService.create(createProductDto)
   }
 
   @UseGuards(AuthenticatedGuard)
   @Get()
   findAll() {
-    return this.productService.findAll();
+    return this.productService.findAll()
   }
 
   @UseGuards(AuthenticatedGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+    return this.productService.findOne(+id)
   }
 
   @UseGuards(AuthenticatedGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+    return this.productService.update(+id, updateProductDto)
   }
 
   @UseGuards(AuthenticatedGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+    return this.productService.remove(+id)
   }
 }

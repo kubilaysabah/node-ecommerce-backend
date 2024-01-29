@@ -1,12 +1,14 @@
 # Setup
 
 ## Requirements
+
 - SQLite
 - Nodejs
 - npm
 - git
 
 ## Installation
+
 1. Clone the repository
 2. Install dependencies with `npm install`
 3. `npx prisma migrate dev --name init` to initialize the database

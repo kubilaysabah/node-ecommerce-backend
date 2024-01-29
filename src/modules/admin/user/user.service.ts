@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from '@nestjs/common'
 import { Users } from '@prisma/client'
 
 import { PrismaService } from '@shared/prisma.service'
@@ -7,7 +7,6 @@ import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UserService {
-
   constructor(private prismaService: PrismaService) {}
 
   findOne({ email, id }: FindUserParams): Promise<Users> {
@@ -16,7 +15,7 @@ export class UserService {
         where: {
           email,
           id: +id,
-        }
+        },
       })
     } catch (error) {
       throw new HttpException(error.message, error.status)
@@ -24,10 +23,10 @@ export class UserService {
   }
 
   findAll() {
-    return this.prismaService.users.findMany();
+    return this.prismaService.users.findMany()
   }
 
-  update(id:number, { role, email, image, lastname, phone, password, firstname }: UpdateUserDto) {
+  update(id: number, { role, email, image, lastname, phone, password, firstname }: UpdateUserDto) {
     try {
       return this.prismaService.users.update({
         where: {
@@ -42,10 +41,10 @@ export class UserService {
           image,
           role: {
             connect: {
-              id: role
-            }
-          }
-        }
+              id: role,
+            },
+          },
+        },
       })
     } catch (error) {
       throw new HttpException(error.message, error.status)
@@ -56,8 +55,8 @@ export class UserService {
     try {
       return this.prismaService.users.delete({
         where: {
-          id
-        }
+          id,
+        },
       })
     } catch (error) {
       throw new HttpException(error.message, error.status)

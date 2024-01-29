@@ -1,12 +1,11 @@
-import { HttpException, Injectable } from "@nestjs/common";
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { HttpException, Injectable } from '@nestjs/common'
+import { CreateCategoryDto } from './dto/create-category.dto'
+import { UpdateCategoryDto } from './dto/update-category.dto'
 import { PrismaService } from '@shared/prisma.service'
 
 @Injectable()
 export class CategoryService {
-  constructor(private prismaService: PrismaService) {
-  }
+  constructor(private prismaService: PrismaService) {}
   create(createCategoryDto: CreateCategoryDto) {
     try {
       return this.prismaService.categories.create({
@@ -17,19 +16,19 @@ export class CategoryService {
           content: createCategoryDto.content,
           url: createCategoryDto.url,
           images: {
-            create: createCategoryDto.images
-          }
-        }
-      });
-    } catch(error) {
+            create: createCategoryDto.images,
+          },
+        },
+      })
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
 
   findAll() {
     try {
-      return this.prismaService.categories.findMany();
-    } catch(error) {
+      return this.prismaService.categories.findMany()
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -39,9 +38,9 @@ export class CategoryService {
       return this.prismaService.categories.findUnique({
         where: {
           id,
-        }
+        },
       })
-    } catch(error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -63,12 +62,12 @@ export class CategoryService {
               data: updateCategoryDto.images,
               where: {
                 id,
-              }
+              },
             },
-          }
-        }
+          },
+        },
       })
-    } catch(error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -78,9 +77,9 @@ export class CategoryService {
       return this.prismaService.categories.delete({
         where: {
           id,
-        }
-      });
-    } catch(error) {
+        },
+      })
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }

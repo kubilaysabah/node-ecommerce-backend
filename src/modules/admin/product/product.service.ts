@@ -1,15 +1,25 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from '@nestjs/common'
 import { PrismaService } from '@shared/prisma.service'
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 
 @Injectable()
 export class ProductService {
+  constructor(private prismaService: PrismaService) {}
 
-  constructor(private prismaService: PrismaService) {
-  }
-
-  create({ url, code, content, description, name, price, rating, quantity, ProductImageRelations, ProductCategoryRelations, ProductBrandRelations }: CreateProductDto) {
+  create({
+    url,
+    code,
+    content,
+    description,
+    name,
+    price,
+    rating,
+    quantity,
+    ProductImageRelations,
+    ProductCategoryRelations,
+    ProductBrandRelations,
+  }: CreateProductDto) {
     try {
       return this.prismaService.products.create({
         data: {
@@ -22,25 +32,25 @@ export class ProductService {
           rating,
           quantity,
           ProductBrandRelations: {
-            create: ProductBrandRelations
+            create: ProductBrandRelations,
           },
           ProductCategoryRelations: {
-            create: ProductCategoryRelations
+            create: ProductCategoryRelations,
           },
           ProductImageRelations: {
-            create: ProductImageRelations
+            create: ProductImageRelations,
           },
-        }
-      });
-    } catch(error) {
+        },
+      })
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
 
   findAll() {
     try {
-      this.prismaService.products.findMany();
-    } catch(error) {
+      this.prismaService.products.findMany()
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
@@ -49,35 +59,38 @@ export class ProductService {
     try {
       return this.prismaService.products.findUnique({
         where: {
-          id: id
+          id: id,
         },
         include: {
           ProductCategoryRelations: true,
-          ProductImageRelations: true
-        }
+          ProductImageRelations: true,
+        },
       })
-    } catch(error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }
 
-  update(id: number, {
-    url,
-    code,
-    content,
-    description,
-    name,
-    price,
-    rating,
-    quantity,
-    ProductBrandRelations,
-    ProductImageRelations,
-    ProductCategoryRelations
-  }: UpdateProductDto) {
+  update(
+    id: number,
+    {
+      url,
+      code,
+      content,
+      description,
+      name,
+      price,
+      rating,
+      quantity,
+      ProductBrandRelations,
+      ProductImageRelations,
+      ProductCategoryRelations,
+    }: UpdateProductDto,
+  ) {
     try {
       return this.prismaService.products.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
           url,
@@ -89,15 +102,15 @@ export class ProductService {
           rating,
           quantity,
           ProductBrandRelations: {
-            create: ProductBrandRelations
+            create: ProductBrandRelations,
           },
           ProductCategoryRelations: {
-            create: ProductCategoryRelations
+            create: ProductCategoryRelations,
           },
           ProductImageRelations: {
-            create: ProductImageRelations
+            create: ProductImageRelations,
           },
-        }
+        },
       })
     } catch (error) {
       throw new HttpException(error.message, error.status)
@@ -108,10 +121,10 @@ export class ProductService {
     try {
       return this.prismaService.products.delete({
         where: {
-          id: id
-        }
+          id: id,
+        },
       })
-    } catch(error) {
+    } catch (error) {
       throw new HttpException(error.message, error.status)
     }
   }

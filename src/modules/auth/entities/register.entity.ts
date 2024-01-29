@@ -1,21 +1,21 @@
-import { IsEmail, IsInt, IsPhoneNumber, IsString } from "class-validator";
+import { IsEmail, IsInt, IsPhoneNumber, IsString } from 'class-validator'
 
 export class ValidateUserEntity {
   @IsEmail()
-  email: string;
+  email: string
 
   @IsString()
-  firstname: string;
+  firstname: string
 
   @IsString()
-  lastname: string;
+  lastname: string
 
   @IsPhoneNumber('TR')
-  phone: string;
+  phone: string
 
   @IsString()
-  image: string;
+  image: string
 
   @IsInt()
-  id: number;
+  id: number
 }

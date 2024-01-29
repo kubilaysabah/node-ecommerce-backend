@@ -1,6 +1,6 @@
-import { NestFactory } from "@nestjs/core";
-import { ValidationPipe } from "@nestjs/common";
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core'
+import { ValidationPipe } from '@nestjs/common'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import * as passport from 'passport'
 import * as session from 'express-session'
 
@@ -21,23 +21,23 @@ import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
     cookie: { secure: true }
   }));
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   /* CORS */
   app.enableCors({
-    origin: "*",
+    origin: '*',
   })
 
   /* Prefix */
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api')
 
   /* Validation */
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe())
 
   /* Interceptors */
-  app.useGlobalInterceptors(new LoggingInterceptor());
-  app.useGlobalInterceptors(new NotFoundInterceptor());
+  app.useGlobalInterceptors(new LoggingInterceptor())
+  app.useGlobalInterceptors(new NotFoundInterceptor())
 
   /* Swagger */
   const config = new DocumentBuilder()
@@ -49,5 +49,5 @@ import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
 
-  await app.listen(3000);
-})();
+  await app.listen(3000)
+})()

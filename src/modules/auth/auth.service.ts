@@ -1,15 +1,15 @@
-import {HttpException, Injectable, UnauthorizedException} from "@nestjs/common";
-import { JwtService } from '@nestjs/jwt';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { Users } from '@prisma/client'
 
-import { RegisterDTO } from "./dto/register.dto";
-import { LoginDTO } from "./dto/login.dto";
+import { RegisterDTO } from './dto/register.dto'
+import { LoginDTO } from './dto/login.dto'
 
-import { UserService } from '@admin/user/user.service';
-import { RoleService } from '@admin/role/role.service';
+import { UserService } from '@admin/user/user.service'
+import { RoleService } from '@admin/role/role.service'
 
 import { PrismaService } from '@shared/prisma.service'
-import { ValidateUserEntity } from "@auth/entities/register.entity";
+import { ValidateUserEntity } from '@auth/entities/register.entity'
 
 @Injectable()
 export class AuthService {
@@ -17,14 +17,13 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private userService: UserService,
     private roleService: RoleService,
-    private jwtService: JwtService
-  ) {
-  }
+    private jwtService: JwtService,
+  ) {}
 
-  async validateUser({ email, password } : LoginDTO): Promise<ValidateUserEntity | null> {
-    const user = await this.userService.findOne({ email });
+  async validateUser({ email, password }: LoginDTO): Promise<ValidateUserEntity | null> {
+    const user = await this.userService.findOne({ email })
 
-    if(user && user.password === password) {
+    if (user && user.password === password) {
       return {
         email: user.email,
         phone: user.phone,
@@ -35,15 +34,14 @@ export class AuthService {
       }
     }
 
-    return null;
+    return null
   }
 
   async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
+    const findUser = await this.userService.findOne({ email })
 
-    const findUser = await this.userService.findOne({ email });
-
-    if(findUser) {
-      throw new HttpException('User already exists', 409);
+    if (findUser) {
+      throw new HttpException('User already exists', 409)
     }
 
     try {
@@ -56,12 +54,11 @@ export class AuthService {
           password,
           role: {
             connect: {
-                id: role
-            }
-          }
-        }
-      });
-
+              id: role,
+            },
+          },
+        },
+      })
     } catch (error) {
       throw new HttpException(error.message, error.status)
     }
@@ -69,13 +66,13 @@ export class AuthService {
 
   async login(loginDTO: LoginDTO) {
     try {
-      const user = await this.validateUser(loginDTO);
+      const user = await this.validateUser(loginDTO)
 
       return this.jwtService.sign({
         user,
       })
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException()
     }
   }
 }
