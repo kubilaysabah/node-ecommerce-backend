@@ -7,6 +7,7 @@ export class FindUserParams {
 	@IsEmail()
 	email?: string
 
+	@ApiProperty()
 	@IsOptional()
 	@IsString()
 	id?: string

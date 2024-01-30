@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport'
 
 import { AuthService } from './auth.service'
 import { RegisterDTO } from './dto/register.dto'
+import { LoginDTO } from '@auth/dto/login.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -17,7 +18,7 @@ export class AuthController {
 
 	@UseGuards(AuthGuard('jwt'))
 	@Post('login')
-	login(@Request() req) {
+	login(@Request() req: { user: LoginDTO }, @Body() loginDTO: LoginDTO) {
 		return this.authService.login(req.user)
 	}
 }

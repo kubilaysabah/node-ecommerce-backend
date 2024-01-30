@@ -2,19 +2,29 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { Users } from '@prisma/client'
 
 import { PrismaService } from '@shared/prisma.service'
-import { FindUserParams } from './dto/find-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UserService {
 	constructor(private prismaService: PrismaService) {}
 
-	findOne({ email, id }: FindUserParams): Promise<Users> {
+	findUserByEmail(email: string): Promise<Users> {
 		try {
 			return this.prismaService.users.findUnique({
 				where: {
 					email,
-					id: +id,
+				},
+			})
+		} catch (error) {
+			throw new HttpException(error.message, error.status)
+		}
+	}
+
+	findUserById(id: number): Promise<Users> {
+		try {
+			return this.prismaService.users.findUnique({
+				where: {
+					id,
 				},
 			})
 		} catch (error) {

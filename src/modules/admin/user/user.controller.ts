@@ -16,7 +16,11 @@ export class UserController {
 			return this.userService.findAll()
 		}
 
-		return this.userService.findOne({ email, id })
+		if (email) {
+			return this.userService.findUserByEmail(email)
+		}
+
+		return this.userService.findUserById(+id)
 	}
 
 	@UseGuards(AuthenticatedGuard)

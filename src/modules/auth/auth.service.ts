@@ -21,7 +21,7 @@ export class AuthService {
 	) {}
 
 	async validateUser({ email, password }: LoginDTO): Promise<ValidateUserEntity | null> {
-		const user = await this.userService.findOne({ email })
+		const user = await this.userService.findUserByEmail(email)
 
 		if (user && user.password === password) {
 			return {
@@ -38,7 +38,7 @@ export class AuthService {
 	}
 
 	async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
-		const findUser = await this.userService.findOne({ email })
+		const findUser = await this.userService.findUserByEmail(email)
 
 		if (findUser) {
 			throw new HttpException('User already exists', 409)
