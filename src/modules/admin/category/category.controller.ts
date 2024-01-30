@@ -21,7 +21,7 @@ import { diskStorage } from 'multer'
 import { CategoryService } from './category.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
-import { AuthenticatedGuard } from '@guards/authenticated.guard'
+import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
 
 const storage = diskStorage({
 	destination: './uploads',

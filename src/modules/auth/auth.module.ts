@@ -6,7 +6,7 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 
 // Strategies
-import { JwtStrategy } from '@strategies/jwt.strategy'
+import { JwtStrategy } from '@auth/strategies/jwt.strategy'
 
 // Other Services
 import { UserService } from '@admin/user/user.service'

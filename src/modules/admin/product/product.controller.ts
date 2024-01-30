@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { AuthenticatedGuard } from '@guards/authenticated.guard'
+import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
 
 import { ProductService } from './product.service'
 import { CreateProductDto } from './dto/create-product.dto'

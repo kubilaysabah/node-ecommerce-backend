@@ -18,12 +18,6 @@
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
-			"@strategies/*": [
-				"./src/strategies/*"
-			],
-			"@guards/*": [
-				"./src/guards/*"
-			],
 			"@interceptors/*": [
 				"./src/interceptors/*"
 			],
@@ -38,6 +32,12 @@
 			],
 			"@auth/*": [
 				"./src/modules/auth/*"
+			],
+			"@strategies/*": [
+				"./src/modules/auth/strategies/*"
+			],
+			"@guards/*": [
+				"./src/modules/auth/guards/*"
 			]
 		}
 	},

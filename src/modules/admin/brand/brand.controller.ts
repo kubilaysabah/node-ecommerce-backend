@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { BrandService } from './brand.service'
 import { CreateBrandDto } from './dto/create-brand.dto'
 import { UpdateBrandDto } from './dto/update-brand.dto'
-import { AuthenticatedGuard } from '@guards/authenticated.guard'
+import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
 
 @ApiTags('admin/brand')
 @Controller('admin/brand')
