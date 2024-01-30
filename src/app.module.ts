@@ -5,8 +5,8 @@ import { AuthModule } from '@modules/auth/auth.module'
 import { AdminModule } from '@modules/admin/admin.module'
 
 @Module({
-  imports: [SharedModule, AuthModule, AdminModule],
-  controllers: [],
-  providers: [],
+	imports: [SharedModule, AuthModule, AdminModule],
+	controllers: [],
+	providers: [],
 })
 export class AppModule {}

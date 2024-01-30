@@ -15,6 +15,7 @@ module.exports = {
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        project: './tsconfig.json',
       },
     },
   ],
@@ -25,10 +26,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    indent: ['error', 'tab', { SwitchCase: 1 }],
     'linebreak-style': 0,
-    quotes: ['error', 'single'],
-    semi: ['error', 'never'],
     'prettier/prettier': 'error',
   },
 }

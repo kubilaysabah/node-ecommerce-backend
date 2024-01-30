@@ -13,15 +13,15 @@ import { UserService } from '@admin/user/user.service'
 import { RoleService } from '@admin/role/role.service'
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: process.env.SECRET_KEY,
-      signOptions: { expiresIn: '60s' },
-    }),
-    PassportModule,
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, UserService, RoleService, JwtStrategy],
-  exports: [AuthService],
+	imports: [
+		JwtModule.register({
+			secret: process.env.SECRET_KEY,
+			signOptions: { expiresIn: '60s' },
+		}),
+		PassportModule,
+	],
+	controllers: [AuthController],
+	providers: [AuthService, UserService, RoleService, JwtStrategy],
+	exports: [AuthService],
 })
 export class AuthModule {}

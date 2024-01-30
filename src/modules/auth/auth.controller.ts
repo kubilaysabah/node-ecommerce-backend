@@ -9,17 +9,17 @@ import { LocalAuthGuard } from '@guards/local-auth.guard'
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+	constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('register')
-  register(@Body() registerDTO: RegisterDTO) {
-    return this.authService.register(registerDTO)
-  }
+	@UseGuards(LocalAuthGuard)
+	@Post('register')
+	register(@Body() registerDTO: RegisterDTO) {
+		return this.authService.register(registerDTO)
+	}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  login(@Request() req, @Body() loginDTO: LoginDTO) {
-    return this.authService.login(loginDTO)
-  }
+	@UseGuards(LocalAuthGuard)
+	@Post('login')
+	login(@Request() req, @Body() loginDTO: LoginDTO) {
+		return this.authService.login(loginDTO)
+	}
 }

@@ -7,27 +7,27 @@ import { AuthenticatedGuard } from '@guards/authenticated.guard'
 @ApiTags('admin/user')
 @Controller('admin/user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthenticatedGuard)
-  @Get()
-  findOne(@Query('email') email: string, @Query('id') id: string) {
-    if (!email && !id) {
-      return this.userService.findAll()
-    }
+	@UseGuards(AuthenticatedGuard)
+	@Get()
+	findOne(@Query('email') email: string, @Query('id') id: string) {
+		if (!email && !id) {
+			return this.userService.findAll()
+		}
 
-    return this.userService.findOne({ email, id })
-  }
+		return this.userService.findOne({ email, id })
+	}
 
-  @UseGuards(AuthenticatedGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto)
-  }
+	@UseGuards(AuthenticatedGuard)
+	@Patch(':id')
+	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+		return this.userService.update(+id, updateUserDto)
+	}
 
-  @UseGuards(AuthenticatedGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id)
-  }
+	@UseGuards(AuthenticatedGuard)
+	@Delete(':id')
+	remove(@Param('id') id: string) {
+		return this.userService.remove(+id)
+	}
 }
