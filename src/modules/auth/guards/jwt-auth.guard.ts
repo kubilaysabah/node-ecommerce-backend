@@ -1,12 +1,45 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
+import { ExecutionContext, Injectable, SetMetadata, UnauthorizedException } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { JwtService } from '@nestjs/jwt'
+
+export const IS_PUBLIC_KEY = 'isPublic'
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true)
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-	canActivate(context: ExecutionContext) {
-		// Add your custom authentication logic here
-		// for example, call super.logIn(request) to establish a session.
-		return super.canActivate(context)
+	constructor(
+		private jwtService: JwtService,
+		private reflector: Reflector,
+	) {
+		super()
+	}
+
+	async canActivate(context: ExecutionContext) {
+		const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()])
+
+		if (isPublic) {
+			// 💡 See this condition
+			return true
+		}
+
+		const request = context.switchToHttp().getRequest()
+		const token = this.extractTokenFromHeader(request)
+		if (!token) {
+			throw new UnauthorizedException()
+		}
+
+		try {
+			const payload = await this.jwtService.verifyAsync(token, {
+				secret: process.env.SECRET_KEY,
+			})
+			// 💡 We're assigning the payload to the request object here
+			// so that we can access it in our route handlers
+			request['user'] = payload
+		} catch {
+			throw new UnauthorizedException()
+		}
+		return true
 	}
 
 	handleRequest(err, user) {
@@ -15,5 +48,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 			throw err || new UnauthorizedException()
 		}
 		return user
+	}
+
+	private extractTokenFromHeader(request: Request): string | undefined {
+		const { headers } = request
+		const [type, token] = headers.get('Authorization')?.split(' ') ?? []
+		return type === 'Bearer' ? token : undefined
 	}
 }

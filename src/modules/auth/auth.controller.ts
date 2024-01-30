@@ -1,6 +1,5 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post, Request } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { AuthGuard } from '@nestjs/passport'
 
 import { AuthService } from './auth.service'
 import { RegisterDTO } from './dto/register.dto'
@@ -16,9 +15,9 @@ export class AuthController {
 		return this.authService.register(registerDTO)
 	}
 
-	@UseGuards(AuthGuard('jwt'))
+	@HttpCode(HttpStatus.OK)
 	@Post('login')
 	login(@Request() req: { user: LoginDTO }, @Body() loginDTO: LoginDTO) {
-		return this.authService.login(req.user)
+		return this.authService.login(loginDTO)
 	}
 }
