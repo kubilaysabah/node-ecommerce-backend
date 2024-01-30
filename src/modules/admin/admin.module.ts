@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AdminController } from './admin.controller'
 
 import { UserModule } from '@admin/user/user.module'
 import { RoleModule } from '@admin/role/role.module'
