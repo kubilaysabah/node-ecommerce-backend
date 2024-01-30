@@ -38,6 +38,9 @@
 			],
 			"@guards/*": [
 				"./src/modules/auth/guards/*"
+			],
+			"@utils/*": [
+				"./src/shared/utils/*"
 			]
 		}
 	},
