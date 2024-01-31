@@ -1,15 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Patch, Query, UseGuards } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+
+import { JwtAuthGuard } from '@guards/jwt-auth.guard'
+
 import { UserService } from './user.service'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
 
 @ApiTags('admin/user')
 @Controller('admin/user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Get()
 	findOne(@Query('email') email: string, @Query('id') id: string) {
 		if (!email && !id) {
@@ -23,13 +26,15 @@ export class UserController {
 		return this.userService.findUserById(+id)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
 	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
 		return this.userService.update(+id, updateUserDto)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.userService.remove(+id)

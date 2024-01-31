@@ -14,14 +14,15 @@ import {
 	UseInterceptors,
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Express } from 'express'
 import { diskStorage } from 'multer'
+
+import { JwtAuthGuard } from '@guards/jwt-auth.guard'
 
 import { CategoryService } from './category.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
-import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
 
 const storage = diskStorage({
 	destination: './uploads',
@@ -35,7 +36,8 @@ const storage = diskStorage({
 export class CategoryController {
 	constructor(private readonly categoryService: CategoryService) {}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Post()
 	@UseInterceptors(FilesInterceptor('images', 4, { storage }))
 	create(
@@ -61,25 +63,29 @@ export class CategoryController {
 		})
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Get()
 	findAll() {
 		return this.categoryService.findAll()
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	findOne(@Param('id') id: string) {
 		return this.categoryService.findOne(+id)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
 	update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
 		return this.categoryService.update(+id, updateCategoryDto)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.categoryService.remove(+id)

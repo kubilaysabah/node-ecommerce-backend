@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
-import { AuthenticatedGuard } from '@auth/guards/authenticated.guard'
+import { JwtAuthGuard } from '@guards/jwt-auth.guard'
+
 import { RoleService } from './role.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { UpdateRoleDto } from './dto/update-role.dto'
@@ -11,31 +12,36 @@ import { UpdateRoleDto } from './dto/update-role.dto'
 export class RoleController {
 	constructor(private readonly roleService: RoleService) {}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Post()
 	create(@Body() createRoleDto: CreateRoleDto) {
 		return this.roleService.create(createRoleDto)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Get()
 	findAll() {
 		return this.roleService.findAll()
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	findOne(@Param('id') id: string) {
 		return this.roleService.findOne(+id)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Patch(':id')
 	update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
 		return this.roleService.update(+id, updateRoleDto)
 	}
 
-	@UseGuards(AuthenticatedGuard)
+	@ApiBearerAuth('authorization')
+	@UseGuards(JwtAuthGuard)
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.roleService.remove(+id)
