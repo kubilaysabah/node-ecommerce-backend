@@ -10,5 +10,6 @@ import { BrandModule } from '@admin/brand/brand.module'
 	imports: [UserModule, RoleModule, CategoryModule, ProductModule, BrandModule],
 	controllers: [],
 	providers: [],
+	exports: [],
 })
 export class AdminModule {}
