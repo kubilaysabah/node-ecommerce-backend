@@ -30,7 +30,7 @@ export class RoleController {
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')
 	findOne(@Param('id') id: string) {
-		return this.roleService.findOne(+id)
+		return this.roleService.findById(+id)
 	}
 
 	@ApiBearerAuth('authorization')

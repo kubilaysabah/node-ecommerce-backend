@@ -6,6 +6,7 @@ import { UpdateRoleDto } from './dto/update-role.dto'
 @Injectable()
 export class RoleService {
 	constructor(private prisma: PrismaService) {}
+
 	create({ name }: CreateRoleDto) {
 		try {
 			return this.prisma.roles.create({
@@ -26,7 +27,7 @@ export class RoleService {
 		}
 	}
 
-	findOne(id: number) {
+	findById(id: number) {
 		try {
 			return this.prisma.roles.findUnique({
 				where: {
