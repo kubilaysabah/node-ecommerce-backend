@@ -9,7 +9,7 @@ import { UserService } from '@admin/user/user.service'
 import { RoleService } from '@admin/role/role.service'
 
 import { PrismaService } from '@shared/prisma.service'
-import { compare, hash } from '@utils/bcrypt'
+import { Bcrypt } from '@utils/bcrypt'
 import { ValidateUserEntity } from '@auth/entities/register.entity'
 
 @Injectable()
@@ -19,10 +19,12 @@ export class AuthService {
 		private userService: UserService,
 		private roleService: RoleService,
 		private jwtService: JwtService,
+		private bcrypt: Bcrypt,
 	) {}
 
 	async validateUser({ email, password }: LoginDTO): Promise<ValidateUserEntity | null> {
 		const user = await this.userService.findUserByEmail(email)
+		const { compare } = this.bcrypt
 
 		if (!user) {
 			throw new HttpException('User not found', 404)
@@ -46,6 +48,7 @@ export class AuthService {
 
 	async register({ email, password, role, lastname, phone, firstname }: RegisterDTO): Promise<Users> {
 		const findUser = await this.userService.findUserByEmail(email)
+		const { hash } = this.bcrypt
 
 		if (findUser) {
 			throw new HttpException('User already exists', 409)

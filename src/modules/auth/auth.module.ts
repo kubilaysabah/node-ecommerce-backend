@@ -11,6 +11,7 @@ import { JwtStrategy } from '@auth/strategies/jwt.strategy'
 // Other Services
 import { UserService } from '@admin/user/user.service'
 import { RoleService } from '@admin/role/role.service'
+import { Bcrypt } from '@utils/bcrypt'
 
 @Module({
 	imports: [
@@ -21,7 +22,7 @@ import { RoleService } from '@admin/role/role.service'
 		PassportModule,
 	],
 	controllers: [AuthController],
-	providers: [AuthService, UserService, RoleService, JwtStrategy],
+	providers: [AuthService, UserService, RoleService, JwtStrategy, Bcrypt],
 	exports: [AuthService],
 })
 export class AuthModule {}

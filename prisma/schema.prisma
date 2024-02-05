@@ -17,18 +17,18 @@ model Logs {
 }
 
 model Addresses {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-  phone   String
-}
-
-model Banners {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  url         String?
-  image       String
+  id          Int       @id @default(autoincrement())
+  name        String?
+  description String
+  country     String
+  city        String
+  district    String
+  street      String
+  apartment   String
+  no          String
+  email       String
+  phone       String
+  Sellers     Sellers[]
 }
 
 model CategoryImages {
@@ -39,22 +39,24 @@ model CategoryImages {
 }
 
 model Categories {
-  id                    Int                        @id @default(autoincrement())
-  parent_id             Int?
-  url                   String                     @unique
-  name                  String
-  description           String?
-  content               String?
-  images                CategoryImages[]
-  ProductsCategories    ProductCategoryRelations[]
-  PostCategoryRelations PostCategoryRelations[]
+  id                 Int                        @id @default(autoincrement())
+  parent_id          Int?
+  url                String                     @unique
+  name               String
+  description        String?
+  content            String?
+  images             CategoryImages[]
+  ProductsCategories ProductCategoryRelations[]
+  Sellers            Sellers[]
 }
 
 model ProductVariants {
-  id    Int    @id @default(autoincrement())
-  code  String @unique
-  name  String
-  value String
+  id         Int       @id @default(autoincrement())
+  code       String    @unique
+  name       String
+  value      String
+  Variants   Variants? @relation(fields: [variantsId], references: [id])
+  variantsId Int?
 }
 
 model ProductImages {
@@ -73,6 +75,30 @@ model Brands {
   ProductBrandRelations   ProductBrandRelations[]
 }
 
+model VariantImages {
+  id         Int       @id @default(autoincrement())
+  stock      Int
+  image      String
+  Variants   Variants? @relation(fields: [variantsId], references: [id])
+  variantsId Int?
+}
+
+model Variants {
+  id              Int               @id @default(autoincrement())
+  code            String            @unique
+  url             String            @unique
+  name            String
+  description     String?
+  images          VariantImages[]
+  content         String?
+  stock           Int
+  price           Float
+  discount        Float
+  rating          Float             @default(0)
+  productVariants ProductVariants[]
+  Products        Products[]
+}
+
 model Products {
   id                       Int                        @id @default(autoincrement())
   code                     String                     @unique
@@ -81,26 +107,16 @@ model Products {
   description              String?
   content                  String?
   price                    Float
-  quantity                 Int
+  stock                    Int
   rating                   Float                      @default(0)
-  ProductCategoryRelations ProductCategoryRelations[]
-  ProductOrderRelations    ProductOrderRelations[]
-  ProductSellerRelations   ProductSellerRelations[]
-  ProductImageRelations    ProductImageRelations[]
+  discount                 Float
   productBrandRelationsId  Int?
   ProductBrandRelations    ProductBrandRelations?     @relation(fields: [productBrandRelationsId], references: [id])
-}
-
-model Sellers {
-  id                     Int                      @id @default(autoincrement())
-  code                   String                   @unique
-  name                   String
-  description            String?
-  image                  String
-  phone                  String                   @unique
-  email                  String                   @unique
-  rating                 Float                    @default(0)
-  ProductSellerRelations ProductSellerRelations[]
+  ProductImageRelations    ProductImageRelations[]
+  ProductCategoryRelations ProductCategoryRelations[]
+  ProductOrderRelations    ProductOrderRelations[]
+  SellerProductsRelations  SellerProductsRelations[]
+  Variants                 Variants[]
 }
 
 model Roles {
@@ -112,13 +128,13 @@ model Roles {
 model Users {
   id                   Int                  @id @default(autoincrement())
   image                String?
-  firstname            String
-  lastname             String
   phone                String               @unique
   email                String               @unique
+  password             String
+  firstname            String
+  lastname             String
   roleId               Int
   role                 Roles                @relation(fields: [roleId], references: [id])
-  password             String
   userOrderRelationsId Int?
   UserOrderRelations   UserOrderRelations[]
 }
@@ -132,23 +148,6 @@ model Orders {
   ProductOrderRelations ProductOrderRelations[]
   UserOrderRelations    UserOrderRelations?     @relation(fields: [userOrderRelationsId], references: [id])
   userOrderRelationsId  Int?
-}
-
-model Pages {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String?
-  content     String?
-  image       String?
-}
-
-model Posts {
-  id                    Int                     @id @default(autoincrement())
-  title                 String
-  description           String?
-  content               String?
-  image                 String?
-  PostCategoryRelations PostCategoryRelations[]
 }
 
 model ProductImageRelations {
@@ -167,11 +166,12 @@ model ProductBrandRelations {
 }
 
 model ProductCategoryRelations {
-  id         Int          @id @default(autoincrement())
-  productId  Int
-  categoryId Int
-  Products   Products[]
-  Categories Categories[]
+  id           Int         @id @default(autoincrement())
+  productId    Int
+  Categories   Categories? @relation(fields: [categoriesId], references: [id])
+  categoriesId Int?
+  Products     Products?   @relation(fields: [productsId], references: [id])
+  productsId   Int?
 }
 
 model ProductOrderRelations {
@@ -182,14 +182,6 @@ model ProductOrderRelations {
   Orders    Orders[]
 }
 
-model ProductSellerRelations {
-  id        Int        @id @default(autoincrement())
-  productId Int
-  sellerId  Int
-  Products  Products[]
-  Sellers   Sellers[]
-}
-
 model UserOrderRelations {
   id     Int      @id @default(autoincrement())
   userId Int
@@ -197,10 +189,25 @@ model UserOrderRelations {
   Orders Orders[]
 }
 
-model PostCategoryRelations {
-  id         Int          @id @default(autoincrement())
-  postId     Int
-  categoryId Int
-  Posts      Posts[]
-  Categories Categories[]
+model Sellers {
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  description             String?
+  image                   String?
+  phone                   String
+  email                   String
+  rating                  Float                     @default(0)
+  address                 Addresses                 @relation(fields: [addressesId], references: [id])
+  addressesId             Int
+  SellerProductsRelations SellerProductsRelations[]
+  CategoryId              Int?
+  Categories              Categories?               @relation(fields: [CategoryId], references: [id])
+}
+
+model SellerProductsRelations {
+  id        Int        @id @default(autoincrement())
+  ProductId Int
+  SellerId  Int
+  Products  Products[]
+  Sellers   Sellers[]
 }
