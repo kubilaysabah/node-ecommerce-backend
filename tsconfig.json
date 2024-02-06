@@ -30,8 +30,11 @@
 			"@admin/*": [
 				"./src/modules/admin/*"
 			],
-			"@auth/*": [
-				"./src/modules/auth/*"
+			"@seller/*": [
+				"./src/modules/seller/*"
+			],
+			"@user/*": [
+				"./src/modules/user/*"
 			],
 			"@strategies/*": [
 				"./src/modules/auth/strategies/*"

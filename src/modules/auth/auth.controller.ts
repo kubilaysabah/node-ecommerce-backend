@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Request } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { AuthService } from './auth.service'
@@ -17,7 +17,7 @@ export class AuthController {
 
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	login(@Request() req: { user: LoginDTO }, @Body() loginDTO: LoginDTO) {
+	login(@Body() loginDTO: LoginDTO) {
 		return this.authService.login(loginDTO)
 	}
 }

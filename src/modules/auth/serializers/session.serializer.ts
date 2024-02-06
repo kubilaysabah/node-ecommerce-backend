@@ -7,7 +7,7 @@ export class SessionSerializer extends PassportSerializer {
 		done(null, user)
 	}
 
-	async deserializeUser(payload: string, done: (err: Error, payload: string) => void): Promise<void> {
+	deserializeUser(payload: string, done: (err: Error, payload: string) => void): void {
 		done(null, payload)
 	}
 }
