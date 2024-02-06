@@ -1,7 +1,7 @@
-import { IsInt, IsEmail, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator'
+import { IsEmail, IsInt, IsNotEmpty, IsPhoneNumber, Length } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class RegisterDTO {
+export class RegisterAuthDto {
 	@ApiProperty()
 	@IsNotEmpty()
 	@IsEmail()
@@ -14,7 +14,7 @@ export class RegisterDTO {
 
 	@ApiProperty()
 	@IsNotEmpty()
-	@IsPhoneNumber()
+	@IsPhoneNumber('TR')
 	phone: string
 
 	@ApiProperty()

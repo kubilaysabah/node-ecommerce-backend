@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { LoginUserDto } from './dto/login-user.dto'
-import { RegisterUserDto } from './dto/register-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 
 @Injectable()
 export class UserService {
-	login(loginUserDto: LoginUserDto): void {
-		return
-	}
+	find(id: string): void {}
 
-	register(registerUserDto: RegisterUserDto) {
-		return
-	}
+	update(id: string, updateUserDto: UpdateUserDto): void {}
+
+	remove(id: string): void {}
 }

@@ -120,9 +120,18 @@ model Products {
 }
 
 model Roles {
-  id    Int     @id @default(autoincrement())
-  name  String
-  Users Users[]
+  id             Int      @id @default(autoincrement())
+  name           String
+  Administrators Admins[]
+}
+
+model Admins {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  phone    String @unique
+  password String
+  Roles    Roles? @relation(fields: [rolesId], references: [id])
+  rolesId  Int?
 }
 
 model Users {
@@ -133,10 +142,9 @@ model Users {
   password             String
   firstname            String
   lastname             String
-  roleId               Int
-  role                 Roles                @relation(fields: [roleId], references: [id])
   userOrderRelationsId Int?
   UserOrderRelations   UserOrderRelations[]
+  UserSellers          UserSellers[]
 }
 
 model Orders {
@@ -202,6 +210,13 @@ model Sellers {
   SellerProductsRelations SellerProductsRelations[]
   CategoryId              Int?
   Categories              Categories?               @relation(fields: [CategoryId], references: [id])
+  UserSellers             UserSellers[]
+}
+
+model UserSellers {
+  id      Int       @id @default(autoincrement())
+  Users   Users[]
+  Sellers Sellers[]
 }
 
 model SellerProductsRelations {
