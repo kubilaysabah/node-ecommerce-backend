@@ -13,6 +13,11 @@ export class RegisterAuthDto {
 	password: string
 
 	@ApiProperty()
+	@Length(3, 20)
+	@IsNotEmpty()
+	passwordAgain: string
+
+	@ApiProperty()
 	@IsNotEmpty()
 	@IsPhoneNumber('TR')
 	phone: string

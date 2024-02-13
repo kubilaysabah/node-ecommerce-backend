@@ -11,7 +11,9 @@ import { AppModule } from './app.module'
 import { LoggingInterceptor } from '@interceptors/logging.interceptor'
 import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 ;(async (): Promise<void> => {
-	const app = await NestFactory.create(AppModule)
+	const app = await NestFactory.create(AppModule, {
+		snapshot: true,
+	})
 
 	app.use(
 		session({
