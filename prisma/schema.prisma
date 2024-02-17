@@ -10,155 +10,38 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Log {
-  id        Int      @id @default(autoincrement())
-  message   String
-  createdAt DateTime @default(now())
-}
-
-model Role {
-  id             Int     @id @default(autoincrement())
-  name           String
-  Administrators Admin[]
-}
-
-model Admin {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  phone    String @unique
-  password String
-  Roles    Role?  @relation(fields: [rolesId], references: [id])
-  rolesId  Int?
-}
-
 model Address {
-  id              Int                       @id @default(autoincrement())
-  name            String
-  description     String?
-  country         String
-  city            String
-  district        String
-  street          String
-  apartment       String
-  no              String
-  email           String
-  phone           String
-  CustomerAddress RelationCustomerAddress[]
-  SellerAddress   RelationSellerAddress[]
-}
-
-model Seller {
-  id          Int                     @id @default(autoincrement())
-  name        String
-  description String?
-  image       String?
-  phone       String
-  email       String
-  rating      Float                   @default(0)
-  CategoryId  Int?
-  Categories  Category?               @relation(fields: [CategoryId], references: [id])
-  addresses   RelationSellerAddress[]
-}
-
-model RelationSellerAddress {
-  id        Int     @id @default(autoincrement())
-  sellerId  Int
-  addressId Int
-  Seller    Seller  @relation(fields: [sellerId], references: [id])
-  Address   Address @relation(fields: [addressId], references: [id])
+  id         String                @id @default(cuid())
+  name       String
+  street     String
+  city       String
+  state      String
+  country    String
+  zip        String
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  customerId String?
+  customer   CustomersOnAddresses? @relation(fields: [customerId], references: [id])
 }
 
 model Customer {
-  id        Int                       @id @default(autoincrement())
-  image     String?
-  phone     String                    @unique
+  id        String                 @id @default(cuid())
+  image     String
   firstname String
   lastname  String
-  email     String                    @unique
+  email     String
+  phone     String
   password  String
   birthdate DateTime?
-  gender    String?
-  addresses RelationCustomerAddress[]
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+  gender    String
+  addresses CustomersOnAddresses[]
 }
 
-model RelationCustomerAddress {
-  id         Int      @id @default(autoincrement())
-  customerId Int
-  addressId  Int
-  Customer   Customer @relation(fields: [customerId], references: [id])
-  Address    Address  @relation(fields: [addressId], references: [id])
-}
-
-model Category {
-  id          Int             @id @default(autoincrement())
-  parent_id   Int?
-  url         String          @unique
-  name        String
-  description String?
-  content     String?
-  images      CategoryImage[]
-  Sellers     Seller[]
-}
-
-model CategoryImage {
-  id         Int        @id @default(autoincrement())
-  name       String
-  image      String
-  Categories Category[]
-}
-
-model Brand {
-  id             Int     @id @default(autoincrement())
-  name           String
-  description    String?
-  image          String?
-  productBrandId Int?
-}
-
-model Product {
-  id             Int       @id @default(autoincrement())
-  code           String    @unique
-  url            String    @unique
-  name           String
-  description    String?
-  content        String?
-  price          Float
-  stock          Int
-  rating         Float     @default(0)
-  discount       Float
-  productBrandId Int?
-  Variants       Variant[]
-}
-
-model VariantImage {
-  id         Int      @id @default(autoincrement())
-  stock      Int
-  image      String
-  Variants   Variant? @relation(fields: [variantsId], references: [id])
-  variantsId Int?
-}
-
-model Variant {
-  id              Int                      @id @default(autoincrement())
-  code            String                   @unique
-  url             String                   @unique
-  name            String
-  description     String?
-  images          VariantImage[]
-  content         String?
-  stock           Int
-  price           Float
-  discount        Float
-  rating          Float                    @default(0)
-  productVariants RelationProductVariant[]
-  Products        Product[]
-}
-
-model RelationProductVariant {
-  id         Int      @id @default(autoincrement())
-  code       String   @unique
-  name       String
-  value      String
-  Variants   Variant? @relation(fields: [variantsId], references: [id])
-  variantsId Int?
+model CustomersOnAddresses {
+  id         String    @id @default(cuid())
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  addresses  Address[]
 }
