@@ -10,38 +10,120 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Address {
-  id         String                @id @default(cuid())
+model Category {
+  id          String                 @id @default(cuid())
+  parent_id   String?
+  image       String?
+  name        String
+  description String?
+  content     String?
+  created_at  DateTime               @default(now())
+  updated_at  DateTime               @updatedAt
+  products    ProductsOnCategories[]
+  sellers     SellersOnCategories[]
+}
+
+model Product {
+  id          String                 @id @default(cuid())
+  name        String
+  description String?
+  content     String?
+  price       Float?                 @default(0)
+  image       String?
+  stock       Int?                   @default(0)
+  created_at  DateTime               @default(now())
+  updated_at  DateTime               @updatedAt
+  categories  ProductsOnCategories[]
+  seller_id   String?
+  seller      SellersOnProducts?     @relation(fields: [seller_id], references: [id])
+}
+
+model ProductsOnCategories {
+  id       String     @id @default(cuid())
+  product  Product[]
+  category Category[]
+}
+
+model CustomerAddress {
+  id          String                        @id @default(cuid())
+  name        String
+  street      String
+  city        String
+  state       String
+  country     String
+  zip         String
+  createdAt   DateTime                      @default(now())
+  updatedAt   DateTime                      @updatedAt
+  customer_id String?
+  customer    CustomersOnCustomerAddresses? @relation(fields: [customer_id], references: [id])
+}
+
+model Customer {
+  id         String                         @id @default(cuid())
+  image      String?
+  firstname  String
+  lastname   String
+  email      String                         @unique
+  phone      String                         @unique
+  password   String
+  birthdate  DateTime?
+  created_at DateTime                       @default(now())
+  updated_at DateTime                       @updatedAt
+  gender     String
+  addresses  CustomersOnCustomerAddresses[]
+}
+
+model CustomersOnCustomerAddresses {
+  id          String            @id @default(cuid())
+  customer_id String
+  customer    Customer          @relation(fields: [customer_id], references: [id])
+  addresses   CustomerAddress[]
+}
+
+model Seller {
+  id          String               @id @default(cuid())
+  name        String
+  description String
+  email       String               @unique
+  phone       String               @unique
+  rating      Float                @default(0)
+  addresses   SellersOnAddresses[]
+  products    SellersOnProducts[]
+  category_id String?
+  category    SellersOnCategories? @relation(fields: [category_id], references: [id])
+}
+
+model SellerAddress {
+  id         String              @id @default(cuid())
   name       String
   street     String
   city       String
   state      String
   country    String
   zip        String
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-  customerId String?
-  customer   CustomersOnAddresses? @relation(fields: [customerId], references: [id])
+  created_at DateTime            @default(now())
+  updated_at DateTime            @updatedAt
+  seller_id  String?
+  seller     SellersOnAddresses? @relation(fields: [seller_id], references: [id])
 }
 
-model Customer {
-  id        String                 @id @default(cuid())
-  image     String
-  firstname String
-  lastname  String
-  email     String
-  phone     String
-  password  String
-  birthdate DateTime?
-  createdAt DateTime               @default(now())
-  updatedAt DateTime               @updatedAt
-  gender    String
-  addresses CustomersOnAddresses[]
+model SellersOnAddresses {
+  id        String          @id @default(cuid())
+  seller_id String
+  seller    Seller          @relation(fields: [seller_id], references: [id])
+  addresses SellerAddress[]
 }
 
-model CustomersOnAddresses {
-  id         String    @id @default(cuid())
-  customerId String
-  customer   Customer  @relation(fields: [customerId], references: [id])
-  addresses  Address[]
+model SellersOnCategories {
+  id          String   @id @default(cuid())
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id])
+  sellers     Seller[]
+}
+
+model SellersOnProducts {
+  id        String    @id @default(cuid())
+  seller_id String
+  seller    Seller    @relation(fields: [seller_id], references: [id])
+  products  Product[]
 }
