@@ -1,18 +1,18 @@
 import { IsEmail, IsOptional, IsPhoneNumber, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class FindCustomerDto {
-	@ApiProperty()
+export class FindCustomerQuery {
+	@ApiProperty({ required: false })
 	@IsString()
 	@IsOptional()
 	readonly id?: string
 
-	@ApiProperty()
+	@ApiProperty({ required: false })
 	@IsEmail()
 	@IsOptional()
 	readonly email?: string
 
-	@ApiProperty()
+	@ApiProperty({ required: false })
 	@IsPhoneNumber('TR')
 	@IsOptional()
 	readonly phone?: string

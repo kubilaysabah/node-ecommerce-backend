@@ -64,5 +64,5 @@ import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 	const document = SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('', app, document)
 
-	await app.listen(process.env.PORT || 5000)
+	await app.listen(process.env.PORT)
 })()

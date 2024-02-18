@@ -1,17 +1,16 @@
 import { HttpException, Injectable } from '@nestjs/common'
 import { RegisterCustomerDto } from './dto/register-customer.dto'
-import { UpdateCustomerDto } from './dto/update-customer.dto'
-import { FindCustomerDto } from './dto/find-customer.dto'
+import { FindCustomerQuery } from './dto/find-customer.query'
 import { Customer } from './entities/customer.entity'
 
 import { PrismaService } from '@shared/prisma.service'
-import { Bcrypt } from '@utils/bcrypt'
+import { BcryptService } from '@shared/bcrypt.service'
 
 @Injectable()
 export class CustomerService {
 	constructor(
 		private prisma: PrismaService,
-		private bcrypt: Bcrypt,
+		private bcrypt: BcryptService,
 	) {}
 
 	async register({
@@ -54,24 +53,28 @@ export class CustomerService {
 	}
 
 	findAll() {
-		return `This action returns all customer`
+		return this.prisma.customer.findMany()
 	}
 
-	findOne({ email, phone, id }: FindCustomerDto) {
-		return this.prisma.customer.findFirst({
+	async findOne({ email, phone, id }: FindCustomerQuery): Promise<Customer> {
+		const user = await this.prisma.customer.findFirst({
 			where: {
 				id,
 				phone,
 				email,
 			},
 		})
-	}
 
-	update(id: number, updateCustomerDto: UpdateCustomerDto) {
-		return `This action updates a #${id} customer`
-	}
+		if (!user) {
+			throw new HttpException('User not found', 404)
+		}
 
-	remove(id: number) {
-		return `This action removes a #${id} customer`
+		return {
+			email: user.email,
+			phone: user.phone,
+			id: user.id,
+			firstname: user.firstname,
+			lastname: user.lastname,
+		}
 	}
 }
