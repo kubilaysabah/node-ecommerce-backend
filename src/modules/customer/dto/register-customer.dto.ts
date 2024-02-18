@@ -1,12 +1,7 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class Customer {
-	@ApiProperty()
-	@IsString()
-	@IsNotEmpty()
-	readonly id: string
-
+export class RegisterCustomerDto {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
@@ -19,11 +14,21 @@ export class Customer {
 
 	@ApiProperty()
 	@IsNotEmpty()
+	@IsEmail()
+	readonly email: string
+
+	@ApiProperty()
+	@IsNotEmpty()
 	@IsPhoneNumber('TR')
 	readonly phone: string
 
 	@ApiProperty()
+	@IsString()
 	@IsNotEmpty()
-	@IsEmail()
-	readonly email: string
+	readonly password: string
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	readonly passwordAgain: string
 }

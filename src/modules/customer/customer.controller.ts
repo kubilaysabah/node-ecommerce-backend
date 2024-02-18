@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CustomerService } from './customer.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
+import { CustomerService } from './customer.service'
+import { RegisterCustomerDto } from './dto/register-customer.dto'
+import { UpdateCustomerDto } from './dto/update-customer.dto'
 
 @Controller('customer')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {}
+	constructor(private readonly customerService: CustomerService) {}
 
-  @Post()
-  create(@Body() createCustomerDto: CreateCustomerDto) {
-    return this.customerService.create(createCustomerDto);
-  }
+	@Get()
+	find(@Query('id') id: string, @Query('email') email: string, @Query('phone') phone: string) {
+		if (id || email || phone) {
+			return this.customerService.findOne({ id, email, phone })
+		}
 
-  @Get()
-  findAll() {
-    return this.customerService.findAll();
-  }
+		return this.customerService.findAll()
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
-  }
+	@Post('register')
+	register(@Body() registerCustomerDto: RegisterCustomerDto) {
+		return this.customerService.register(registerCustomerDto)
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
-    return this.customerService.update(+id, updateCustomerDto);
-  }
+	@Patch(':id')
+	update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
+		return this.customerService.update(+id, updateCustomerDto)
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
-  }
+	@Delete(':id')
+	remove(@Param('id') id: string) {
+		return this.customerService.remove(+id)
+	}
 }
