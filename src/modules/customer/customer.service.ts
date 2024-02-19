@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common'
 import { FindCustomerQuery } from './dto/find-customer.query'
 import { Customer } from './entities/customer.entity'
 
-import { PrismaService } from '@shared/services/prisma.service'
+import { PrismaService } from '@services/prisma.service'
 
 @Injectable()
 export class CustomerService {

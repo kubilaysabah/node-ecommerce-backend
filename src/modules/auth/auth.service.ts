@@ -5,8 +5,8 @@ import { RegisterEntity } from './entities/register.entity'
 import { RegisterAuthDto } from './dto/register-auth.dto'
 import { LoginAuthDto } from './dto/login-auth.dto'
 
-import { PrismaService } from '@shared/services/prisma.service'
-import { BcryptService } from '@shared/services/bcrypt.service'
+import { PrismaService } from '@services/prisma.service'
+import { BcryptService } from '@services/bcrypt.service'
 
 import { CustomerService } from '@modules/customer/customer.service'
 

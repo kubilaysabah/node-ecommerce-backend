@@ -27,23 +27,17 @@
 			"@shared/*": [
 				"./src/shared/*"
 			],
-			"@admin/*": [
-				"./src/modules/admin/*"
-			],
-			"@seller/*": [
-				"./src/modules/seller/*"
-			],
-			"@user/*": [
-				"./src/modules/user/*"
-			],
-			"@strategies/*": [
-				"./src/modules/auth/strategies/*"
+			"@enums/*": [
+				"./src/shared/enums/*"
 			],
 			"@guards/*": [
-				"./src/modules/auth/guards/*"
+				"./src/shared/guards/*"
 			],
-			"@utils/*": [
-				"./src/shared/utils/*"
+			"@decorators/*": [
+				"./src/shared/decorators/*"
+			],
+			"@services/*": [
+				"./src/shared/services/*"
 			]
 		}
 	},

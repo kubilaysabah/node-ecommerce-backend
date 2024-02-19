@@ -6,8 +6,8 @@ import { FindAdminDto } from './dto/find-admin.dto'
 
 import { RoleService } from '@modules/role/role.service'
 
-import { PrismaService } from '@shared/services/prisma.service'
-import { BcryptService } from '@shared/services/bcrypt.service'
+import { PrismaService } from '@services/prisma.service'
+import { BcryptService } from '@services/bcrypt.service'
 
 @Injectable()
 export class AdminService {
