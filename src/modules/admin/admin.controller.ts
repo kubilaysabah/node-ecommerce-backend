@@ -1,4 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+
 import { AdminService } from './admin.service'
 import { CreateAdminDto } from './dto/create-admin.dto'
 import { UpdateAdminDto } from './dto/update-admin.dto'
@@ -7,6 +9,8 @@ import { Roles } from '@decorators/role.decorator'
 import { Role } from '@enums/role.enum'
 import { AuthGuard } from '@guards/auth.guard'
 
+@ApiTags('admin')
+@ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
 	constructor(private readonly adminService: AdminService) {}
