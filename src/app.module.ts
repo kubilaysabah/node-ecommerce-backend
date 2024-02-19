@@ -4,6 +4,8 @@ import { DevtoolsModule } from '@nestjs/devtools-integration'
 import { SharedModule } from '@shared/shared.module'
 import { CustomerModule } from '@modules/customer/customer.module'
 import { AuthModule } from './modules/auth/auth.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
 	imports: [
@@ -13,6 +15,8 @@ import { AuthModule } from './modules/auth/auth.module';
 		SharedModule,
 		CustomerModule,
 		AuthModule,
+		AdminModule,
+		RoleModule,
 	],
 	controllers: [],
 	providers: [],
