@@ -1,7 +1,7 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
 
-export class Customer {
+export class RegisterEntity {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
@@ -26,9 +26,4 @@ export class Customer {
 	@IsNotEmpty()
 	@IsEmail()
 	readonly email: string
-
-	@ApiProperty()
-	@IsString()
-	@IsNotEmpty()
-	readonly password: string
 }
