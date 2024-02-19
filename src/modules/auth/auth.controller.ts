@@ -4,7 +4,7 @@ import { AuthService } from './auth.service'
 import { RegisterAuthDto } from './dto/register-auth.dto'
 
 import { LoginAuthDto } from '@modules/auth/dto/login-auth.dto'
-import { RegisterEntity } from '@modules/auth/entities/find.entity'
+import { RegisterEntity } from '@modules/auth/entities/register.entity'
 
 @Controller('auth')
 export class AuthController {

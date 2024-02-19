@@ -1,7 +1,7 @@
 import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
-import { RegisterEntity } from './entities/find.entity'
+import { RegisterEntity } from './entities/register.entity'
 import { RegisterAuthDto } from './dto/register-auth.dto'
 import { LoginAuthDto } from './dto/login-auth.dto'
 

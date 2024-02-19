@@ -10,6 +10,33 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model Role {
+  id     String          @id @default(cuid())
+  name   String
+  admins AdminsOnRoles[]
+}
+
+model Admin {
+  id         String         @id @default(cuid())
+  firstname  String
+  lastname   String
+  email      String         @unique
+  phone      String         @unique
+  image      String?
+  password   String
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
+  role_id    String?
+  role       AdminsOnRoles? @relation(fields: [role_id], references: [id])
+}
+
+model AdminsOnRoles {
+  id      String  @id @default(cuid())
+  admin   Admin[]
+  role_id String
+  role    Role    @relation(fields: [role_id], references: [id])
+}
+
 model Category {
   id          String                 @id @default(cuid())
   parent_id   String?
