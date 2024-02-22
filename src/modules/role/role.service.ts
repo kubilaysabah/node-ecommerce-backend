@@ -15,7 +15,7 @@ export class RoleService {
 
 		return this.prisma.role.create({
 			data: {
-				name: name.toLocaleLowerCase('tr').trim(),
+				name: name.toLowerCase().trim(),
 			},
 		})
 	}
@@ -28,7 +28,7 @@ export class RoleService {
 		return this.prisma.role.findFirst({
 			where: {
 				id,
-				name: name.toLocaleLowerCase('tr').trim(),
+				name: name.toLowerCase().trim(),
 			},
 		})
 	}
