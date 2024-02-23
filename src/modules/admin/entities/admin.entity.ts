@@ -29,7 +29,10 @@ export class Admin {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	readonly role: string
+	readonly role: {
+		id: string
+		role_id: string
+	}
 
 	@ApiProperty({ required: false })
 	@IsString()
@@ -39,10 +42,10 @@ export class Admin {
 	@ApiProperty({ required: false })
 	@IsDateString()
 	@IsOptional()
-	readonly created_at?: string
+	readonly created_at?: Date
 
 	@ApiProperty({ required: false })
 	@IsDateString()
 	@IsOptional()
-	readonly updated_at?: string
+	readonly updated_at?: Date
 }

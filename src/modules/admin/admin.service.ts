@@ -4,7 +4,10 @@ import { CreateAdminDto } from './dto/create-admin.dto'
 import { UpdateAdminDto } from './dto/update-admin.dto'
 import { FindAdminDto } from './dto/find-admin.dto'
 
+import { Admin } from './entities/admin.entity'
+
 import { RoleService } from '@modules/role/role.service'
+import { AdminsOnRolesService } from '@modules/admins-on-roles/admins-on-roles.service'
 
 import { PrismaService } from '@services/prisma.service'
 import { BcryptService } from '@services/bcrypt.service'
@@ -15,12 +18,14 @@ export class AdminService {
 		private prisma: PrismaService,
 		private bcrypt: BcryptService,
 		private roleService: RoleService,
+		private adminsOnRolesService: AdminsOnRolesService,
 	) {}
-	async create({ image, email, phone, lastname, firstname, passwordAgain, password }: CreateAdminDto) {
-		const admin = await this.find({ email, phone })
-		const role = await this.roleService.find({ name: 'admin' })
 
-		if (admin) {
+	async create({ image, email, phone, lastname, firstname, passwordAgain, password }: CreateAdminDto): Promise<Admin> {
+		const findAdmin = await this.find({ email, phone })
+		const findRole = await this.roleService.find({ name: 'admin' })
+
+		if (findAdmin) {
 			throw new HttpException('Admin already exists', 400)
 		}
 
@@ -28,11 +33,11 @@ export class AdminService {
 			throw new HttpException('Passwords do not match', 400)
 		}
 
-		if (!role) {
+		if (!findRole) {
 			throw new HttpException('Role not found', 404)
 		}
 
-		return this.prisma.admin.create({
+		const createAdmin = await this.prisma.admin.create({
 			data: {
 				image,
 				email,
@@ -42,11 +47,6 @@ export class AdminService {
 				created_at: new Date(),
 				updated_at: new Date(),
 				password: await this.bcrypt.hash(password),
-				role: {
-					connect: {
-						id: role.id,
-					},
-				},
 			},
 			select: {
 				id: true,
@@ -60,6 +60,21 @@ export class AdminService {
 				updated_at: true,
 			},
 		})
+
+		if (!createAdmin) {
+			throw new HttpException('Admin not created', 400)
+		}
+
+		const relation = await this.adminsOnRolesService.create({
+			role_id: findRole.id,
+			admin_id: createAdmin.id,
+		})
+
+		if (!relation) {
+			throw new HttpException('Admin not created', 400)
+		}
+
+		return createAdmin
 	}
 
 	findAll() {
@@ -100,6 +115,12 @@ export class AdminService {
 	}
 
 	remove(id: string) {
+		const findAdmin = this.find({ id })
+
+		if (!findAdmin) {
+			throw new HttpException('Admin not found', 404)
+		}
+
 		return this.prisma.admin.delete({
 			where: {
 				id,

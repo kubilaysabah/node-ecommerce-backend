@@ -7,6 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { RoleModule } from './modules/role/role.module';
 import { CategoryModule } from './modules/category/category.module';
+import { AdminOnRolesModule } from './modules/admin-on-roles/admin-on-roles.module';
+import { AdminsOnRolesModule } from './modules/admins-on-roles/admins-on-roles.module';
 
 @Module({
 	imports: [
@@ -19,6 +21,8 @@ import { CategoryModule } from './modules/category/category.module';
 		AdminModule,
 		RoleModule,
 		CategoryModule,
+		AdminOnRolesModule,
+		AdminsOnRolesModule,
 	],
 	controllers: [],
 	providers: [],
