@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CreateAdminsOnRolesDto } from './dto/create-admins-on-roles.dto'
 import { UpdateAdminsOnRolesDto } from './dto/update-admins-on-roles.dto'
+import { FindAdminsOnRolesDto } from './dto/find-admins-on-roles.dto'
 
 import { PrismaService } from '@services/prisma.service'
 import { AdminService } from '@modules/admin/admin.service'
@@ -13,6 +14,7 @@ export class AdminsOnRolesService {
 		private adminService: AdminService,
 		private roleService: RoleService,
 	) {}
+
 	create({ role_id, admin_id }: CreateAdminsOnRolesDto) {
 		return this.prisma.adminsOnRoles.create({
 			data: {
@@ -34,15 +36,30 @@ export class AdminsOnRolesService {
 		return this.prisma.adminsOnRoles.findMany()
 	}
 
-	findOne(id: string) {
-		return this.prisma.adminsOnRoles.findFirst({
+	find({ id, admin_id, role_id }: FindAdminsOnRolesDto) {
+		return this.prisma.adminsOnRoles.findMany({
 			where: {
 				id,
+				admin: {
+					some: {
+						id: admin_id,
+					},
+				},
+				role_id,
 			},
 		})
 	}
 
-	update(id: string, { role_id, admin_id }: UpdateAdminsOnRolesDto) {
+	async update(id: string, { role_id, admin_id }: UpdateAdminsOnRolesDto) {
+		const admin = await this.find({
+			admin_id,
+			role_id,
+		})
+
+		if (admin.length === 0) {
+			throw new Error('Admin not found')
+		}
+
 		return this.prisma.adminsOnRoles.update({
 			where: {
 				id,
@@ -59,6 +76,14 @@ export class AdminsOnRolesService {
 	}
 
 	async remove(admin_id: string) {
+		const adminsOnRoles = await this.find({
+			admin_id,
+		})
+
+		if (adminsOnRoles.length === 0) {
+			throw new Error('Admin not found')
+		}
+
 		return this.prisma.adminsOnRoles.deleteMany({
 			where: {
 				admin: {

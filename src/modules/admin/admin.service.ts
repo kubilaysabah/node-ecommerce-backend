@@ -29,12 +29,12 @@ export class AdminService {
 			throw new HttpException('Admin already exists', 400)
 		}
 
-		if (password !== passwordAgain) {
-			throw new HttpException('Passwords do not match', 400)
-		}
-
 		if (!findRole) {
 			throw new HttpException('Role not found', 404)
+		}
+
+		if (password !== passwordAgain) {
+			throw new HttpException('Passwords do not match', 400)
 		}
 
 		const createAdmin = await this.prisma.admin.create({
@@ -71,7 +71,7 @@ export class AdminService {
 		})
 
 		if (!relation) {
-			throw new HttpException('Admin not created', 400)
+			throw new HttpException('Admin relations error', 400)
 		}
 
 		return createAdmin
@@ -114,11 +114,17 @@ export class AdminService {
 		})
 	}
 
-	remove(id: string) {
+	async remove(id: string) {
 		const findAdmin = this.find({ id })
 
 		if (!findAdmin) {
 			throw new HttpException('Admin not found', 404)
+		}
+
+		const deleteRelation = await this.adminsOnRolesService.remove(id)
+
+		if (!deleteRelation) {
+			throw new HttpException('Admin relations error', 400)
 		}
 
 		return this.prisma.admin.delete({
