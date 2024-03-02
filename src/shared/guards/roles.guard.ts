@@ -23,6 +23,6 @@ export class RolesGuard implements CanActivate {
 			throw new UnauthorizedException()
 		}
 
-		return requiredRoles.some((role) => role.includes(admin.role))
+		return requiredRoles.some((role) => role.includes(admin.role.role_id))
 	}
 }

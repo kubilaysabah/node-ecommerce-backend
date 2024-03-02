@@ -77,8 +77,20 @@ export class AdminService {
 		return createAdmin
 	}
 
-	findAll() {
-		return this.prisma.admin.findMany()
+	findAll(): Promise<Admin[]> {
+		return this.prisma.admin.findMany({
+			select: {
+				id: true,
+				role: true,
+				email: true,
+				phone: true,
+				firstname: true,
+				lastname: true,
+				image: true,
+				created_at: true,
+				updated_at: true,
+			},
+		})
 	}
 
 	async find({ id, email, phone }: FindAdminDto) {
@@ -105,7 +117,15 @@ export class AdminService {
 		}
 	}
 
-	update(id: string, updateAdminDto: UpdateAdminDto) {
+	async update(id: string, updateAdminDto: UpdateAdminDto) {
+		const findAdmin = await this.find({
+			id,
+		})
+
+		if (!findAdmin) {
+			throw new HttpException('Admin not found', 404)
+		}
+
 		return this.prisma.admin.update({
 			where: {
 				id,

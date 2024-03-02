@@ -3,12 +3,11 @@ import { DevtoolsModule } from '@nestjs/devtools-integration'
 
 import { SharedModule } from '@shared/shared.module'
 import { CustomerModule } from '@modules/customer/customer.module'
-import { AuthModule } from './modules/auth/auth.module';
-import { AdminModule } from './modules/admin/admin.module';
-import { RoleModule } from './modules/role/role.module';
-import { CategoryModule } from './modules/category/category.module';
-import { AdminOnRolesModule } from './modules/admin-on-roles/admin-on-roles.module';
-import { AdminsOnRolesModule } from './modules/admins-on-roles/admins-on-roles.module';
+import { AuthModule } from '@modules/auth/auth.module'
+import { AdminModule } from '@modules/admin/admin.module'
+import { RoleModule } from '@modules/role/role.module'
+import { CategoryModule } from '@modules/category/category.module'
+import { AdminsOnRolesModule } from '@modules/admins-on-roles/admins-on-roles.module'
 
 @Module({
 	imports: [
@@ -21,11 +20,9 @@ import { AdminsOnRolesModule } from './modules/admins-on-roles/admins-on-roles.m
 		AdminModule,
 		RoleModule,
 		CategoryModule,
-		AdminOnRolesModule,
 		AdminsOnRolesModule,
 	],
 	controllers: [],
 	providers: [],
 })
-export class AppModule {
-}
+export class AppModule {}
