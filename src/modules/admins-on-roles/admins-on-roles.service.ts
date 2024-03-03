@@ -4,15 +4,11 @@ import { UpdateAdminsOnRolesDto } from './dto/update-admins-on-roles.dto'
 import { FindAdminsOnRolesDto } from './dto/find-admins-on-roles.dto'
 
 import { PrismaService } from '@services/prisma.service'
-import { AdminService } from '@modules/admin/admin.service'
-import { RoleService } from '@modules/role/role.service'
 
 @Injectable()
 export class AdminsOnRolesService {
 	constructor(
 		private prisma: PrismaService,
-		private adminService: AdminService,
-		private roleService: RoleService,
 	) {}
 
 	create({ role_id, admin_id }: CreateAdminsOnRolesDto) {
