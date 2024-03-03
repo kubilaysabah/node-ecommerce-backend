@@ -50,7 +50,7 @@ export class AdminService {
 			},
 			select: {
 				id: true,
-				role: true,
+				role_id: true,
 				email: true,
 				phone: true,
 				firstname: true,
@@ -58,6 +58,7 @@ export class AdminService {
 				image: true,
 				created_at: true,
 				updated_at: true,
+				password: true,
 			},
 		})
 
@@ -81,7 +82,7 @@ export class AdminService {
 		return this.prisma.admin.findMany({
 			select: {
 				id: true,
-				role: true,
+				role_id: true,
 				email: true,
 				phone: true,
 				firstname: true,
@@ -89,12 +90,13 @@ export class AdminService {
 				image: true,
 				created_at: true,
 				updated_at: true,
+				password: true,
 			},
 		})
 	}
 
-	async find({ id, email, phone }: FindAdminDto) {
-		const admin = await this.prisma.admin.findFirst({
+	async find({ id, email, phone }: FindAdminDto): Promise<Admin> {
+		const findAdmin = await this.prisma.admin.findFirst({
 			where: {
 				id,
 				phone,
@@ -102,18 +104,19 @@ export class AdminService {
 			},
 		})
 
-		if (!admin) {
+		if (!findAdmin) {
 			throw new HttpException('Admin not found', 404)
 		}
 
 		return {
-			phone: admin.phone,
-			email: admin.email,
-			firstname: admin.firstname,
-			lastname: admin.lastname,
-			id: admin.id,
-			role: admin.role_id,
-			image: admin.image,
+			phone: findAdmin.phone,
+			email: findAdmin.email,
+			firstname: findAdmin.firstname,
+			lastname: findAdmin.lastname,
+			id: findAdmin.id,
+			role_id: findAdmin.role_id,
+			image: findAdmin.image,
+			password: findAdmin.password,
 		}
 	}
 

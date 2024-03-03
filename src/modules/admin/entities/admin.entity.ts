@@ -29,15 +29,17 @@ export class Admin {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	readonly role: {
-		id: string
-		role_id: string
-	}
+	readonly role_id: string
 
 	@ApiProperty({ required: false })
 	@IsString()
 	@IsOptional()
 	readonly image?: string
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	readonly password: string
 
 	@ApiProperty({ required: false })
 	@IsDateString()

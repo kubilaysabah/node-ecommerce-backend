@@ -9,14 +9,16 @@ import { PrismaService } from '@services/prisma.service'
 import { BcryptService } from '@services/bcrypt.service'
 
 import { CustomerService } from '@modules/customer/customer.service'
+import { AdminService } from '@modules/admin/admin.service'
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private jwtService: JwtService,
-		private prisma: PrismaService,
-		private bcrypt: BcryptService,
-		private customer: CustomerService,
+		private prismaService: PrismaService,
+		private bcryptService: BcryptService,
+		private customerService: CustomerService,
+		private adminService: AdminService,
 	) {}
 
 	async register({
@@ -27,7 +29,7 @@ export class AuthService {
 		firstname,
 		lastname,
 	}: RegisterAuthDto): Promise<RegisterEntity> {
-		const findUser = await this.customer.find({ email, phone })
+		const findUser = await this.customerService.find({ email, phone })
 
 		if (findUser) {
 			throw new HttpException('User already exists', 409)
@@ -37,13 +39,13 @@ export class AuthService {
 			throw new HttpException('Passwords do not match', 400)
 		}
 
-		const user = await this.prisma.customer.create({
+		const user = await this.prismaService.customer.create({
 			data: {
 				phone,
 				email,
 				firstname,
 				lastname,
-				password: await this.bcrypt.hash(password),
+				password: await this.bcryptService.hash(password),
 				created_at: new Date(),
 				updated_at: new Date(),
 			},
@@ -60,22 +62,38 @@ export class AuthService {
 
 	@HttpCode(HttpStatus.OK)
 	async login({ email, password }: LoginAuthDto): Promise<string> {
-		const user = await this.customer.find({ email })
+		const findCustomer = await this.customerService.find({ email })
 
-		if (!user) {
-			throw new HttpException('User not found', 404)
+		if (!findCustomer) {
+			const findAdmin = await this.adminService.find({ email })
+
+			if (!findAdmin) {
+				throw new HttpException('User not found', 404)
+			}
+
+			if (!(await this.bcryptService.compare(password, findAdmin.password))) {
+				throw new HttpException('Invalid password', 401)
+			}
+
+			return this.jwtService.signAsync({
+				email: findAdmin.email,
+				id: findAdmin.id,
+				phone: findAdmin.phone,
+				firstname: findAdmin.firstname,
+				lastname: findAdmin.lastname,
+			})
 		}
 
-		if (!(await this.bcrypt.compare(password, user.password))) {
+		if (!(await this.bcryptService.compare(password, findCustomer?.password))) {
 			throw new HttpException('Invalid password', 401)
 		}
 
 		return this.jwtService.signAsync({
-			email: user.email,
-			id: user.id,
-			phone: user.phone,
-			firstname: user.firstname,
-			lastname: user.lastname,
+			email: findCustomer.email,
+			id: findCustomer.id,
+			phone: findCustomer.phone,
+			firstname: findCustomer.firstname,
+			lastname: findCustomer.lastname,
 		})
 	}
 }

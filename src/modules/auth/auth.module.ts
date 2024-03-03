@@ -5,6 +5,7 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 
 import { CustomerService } from '@modules/customer/customer.service'
+import { AdminService } from '@modules/admin/admin.service'
 
 @Module({
 	imports: [
@@ -15,6 +16,6 @@ import { CustomerService } from '@modules/customer/customer.service'
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, CustomerService],
+	providers: [AuthService, CustomerService, AdminService],
 })
 export class AuthModule {}
