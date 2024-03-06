@@ -5,12 +5,16 @@ import { Role } from '@enums/role.enum'
 import { ROLES_KEY } from '@decorators/role.decorator'
 
 import { Admin } from '@modules/admin/entities/admin.entity'
+import { RoleService } from '@modules/role/role.service'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-	constructor(private reflector: Reflector) {}
+	constructor(
+		private reflector: Reflector,
+		private roleService: RoleService,
+	) {}
 
-	canActivate(context: ExecutionContext): boolean {
+	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [context.getHandler(), context.getClass()])
 
 		if (!requiredRoles) {
@@ -23,6 +27,12 @@ export class RolesGuard implements CanActivate {
 			throw new UnauthorizedException()
 		}
 
-		return requiredRoles.some((role) => role.includes(admin.role.role_id))
+		const findRole = await this.roleService.find({ id: admin.role_id })
+
+		if (!findRole) {
+			throw new UnauthorizedException()
+		}
+
+		return requiredRoles.some((role) => role.includes(findRole.name))
 	}
 }

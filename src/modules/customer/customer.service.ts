@@ -3,6 +3,7 @@ import { FindCustomerQuery } from './dto/find-customer.query'
 import { Customer } from './entities/customer.entity'
 
 import { PrismaService } from '@services/prisma.service'
+import { CreateCustomerDto } from '@modules/customer/dto/create-customer.dto'
 
 @Injectable()
 export class CustomerService {
@@ -33,5 +34,15 @@ export class CustomerService {
 			lastname: user.lastname,
 			password: user.password,
 		}
+	}
+
+	create(createCustomerDto: CreateCustomerDto) {
+		return this.prisma.customer.create({
+			data: {
+				...createCustomerDto,
+				created_at: new Date(),
+				updated_at: new Date(),
+			},
+		})
 	}
 }
