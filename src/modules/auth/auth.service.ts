@@ -67,6 +67,24 @@ export class AuthService {
 			throw new HttpException('Invalid password', 401)
 		}
 
-		return this.jwtService.signAsync(findCustomer || findAdmin)
+		return this.jwtService.signAsync(
+			findCustomer
+				? {
+						email: findCustomer.email,
+						phone: findCustomer.phone,
+						firstname: findCustomer.firstname,
+						lastname: findCustomer.lastname,
+						image: findCustomer.image,
+						gender: findCustomer.gender,
+						birthdate: findCustomer.birthdate,
+					}
+				: {
+						email: findAdmin.email,
+						phone: findAdmin.phone,
+						firstname: findAdmin.firstname,
+						lastname: findAdmin.lastname,
+						image: findAdmin.image,
+					},
+		)
 	}
 }
