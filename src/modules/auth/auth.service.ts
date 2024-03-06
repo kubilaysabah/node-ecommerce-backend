@@ -6,9 +6,9 @@ import { RegisterAuthDto } from './dto/register-auth.dto'
 import { LoginAuthDto } from './dto/login-auth.dto'
 
 import { BcryptService } from '@services/bcrypt.service'
+import { PrismaService } from '@services/prisma.service'
 
 import { CustomerService } from '@modules/customer/customer.service'
-import { AdminService } from '@modules/admin/admin.service'
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
 		private jwtService: JwtService,
 		private bcryptService: BcryptService,
 		private customerService: CustomerService,
-		private adminService: AdminService,
+		private prismaService: PrismaService,
 	) {}
 
 	async register({
@@ -56,17 +56,17 @@ export class AuthService {
 
 	@HttpCode(HttpStatus.OK)
 	async login({ email, password }: LoginAuthDto): Promise<string> {
-		const findCustomer = await this.customerService.find({ email })
-		const findAdmin = await this.adminService.find({ email })
+		const findCustomer = await this.prismaService.customer.findUnique({ where: { email } })
+		const findAdmin = await this.prismaService.admin.findUnique({ where: { email } })
 
-		if (!findCustomer || !findAdmin) {
+		if (!findCustomer && !findAdmin) {
 			throw new HttpException('User not found', 404)
 		}
 
-		if (!(await this.bcryptService.compare(password, findAdmin ? findAdmin.password : findCustomer.password))) {
+		if (!(await this.bcryptService.compare(password, findCustomer?.password || findAdmin?.password))) {
 			throw new HttpException('Invalid password', 401)
 		}
 
-		return this.jwtService.signAsync(findAdmin ? findAdmin : findCustomer)
+		return this.jwtService.signAsync(findCustomer || findAdmin)
 	}
 }
