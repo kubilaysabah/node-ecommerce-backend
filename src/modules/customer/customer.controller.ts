@@ -29,7 +29,7 @@ export class CustomerController {
 	@Roles(Role.Admin)
 	@UseGuards(AuthGuard)
 	@Post()
-	create(@Body() createCustomerDto: CreateCustomerDto): void {
-		this.customerService.create(createCustomerDto)
+	create(@Body() createCustomerDto: CreateCustomerDto) {
+		return this.customerService.create(createCustomerDto)
 	}
 }

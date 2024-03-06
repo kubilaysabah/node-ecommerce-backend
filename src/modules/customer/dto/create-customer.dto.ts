@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateCustomerDto {
@@ -26,4 +26,19 @@ export class CreateCustomerDto {
 	@IsNotEmpty()
 	@IsString()
 	readonly lastname: string
+
+	@ApiProperty({ required: false })
+	@IsOptional()
+	@IsString()
+	readonly birthdate?: string
+
+	@ApiProperty({ required: false })
+	@IsOptional()
+	@IsString()
+	readonly gender?: string
+
+	@ApiProperty({ required: false })
+	@IsOptional()
+	@IsString()
+	readonly image?: string
 }
