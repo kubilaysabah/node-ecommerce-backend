@@ -5,7 +5,6 @@ import { RegisterEntity } from './entities/register.entity'
 import { RegisterAuthDto } from './dto/register-auth.dto'
 import { LoginAuthDto } from './dto/login-auth.dto'
 
-import { PrismaService } from '@services/prisma.service'
 import { BcryptService } from '@services/bcrypt.service'
 
 import { CustomerService } from '@modules/customer/customer.service'
@@ -15,7 +14,6 @@ import { AdminService } from '@modules/admin/admin.service'
 export class AuthService {
 	constructor(
 		private jwtService: JwtService,
-		private prismaService: PrismaService,
 		private bcryptService: BcryptService,
 		private customerService: CustomerService,
 		private adminService: AdminService,
