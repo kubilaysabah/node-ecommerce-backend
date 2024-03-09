@@ -1,5 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common'
-import { FindCustomerQuery } from './dto/find-customer.query'
+import { Injectable } from '@nestjs/common'
 import { Customer } from './entities/customer.entity'
 
 import { PrismaService } from '@services/prisma.service'
@@ -13,27 +12,28 @@ export class CustomerService {
 		return this.prisma.customer.findMany()
 	}
 
-	async find({ email, phone, id }: FindCustomerQuery): Promise<Customer> {
-		const user = await this.prisma.customer.findFirst({
+	findById(id: string): Promise<Customer> {
+		return this.prisma.customer.findUnique({
 			where: {
 				id,
-				phone,
+			},
+		})
+	}
+
+	findByEmail(email: string): Promise<Customer> {
+		return this.prisma.customer.findFirst({
+			where: {
 				email,
 			},
 		})
+	}
 
-		if (!user) {
-			throw new HttpException('User not found', 404)
-		}
-
-		return {
-			email: user.email,
-			phone: user.phone,
-			id: user.id,
-			firstname: user.firstname,
-			lastname: user.lastname,
-			password: user.password,
-		}
+	findByPhone(phone: string): Promise<Customer> {
+		return this.prisma.customer.findFirst({
+			where: {
+				phone,
+			},
+		})
 	}
 
 	create(createCustomerDto: CreateCustomerDto) {

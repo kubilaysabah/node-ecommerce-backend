@@ -11,7 +11,7 @@ import { Roles } from '@decorators/role.decorator'
 
 import { Role } from '@enums/role.enum'
 
-@ApiBearerAuth()
+@ApiBearerAuth('authorization')
 @ApiTags('admins-on-roles')
 @Controller('admins-on-roles')
 export class AdminsOnRolesController {

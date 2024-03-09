@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 import { Roles } from '@decorators/role.decorator'
@@ -10,20 +10,14 @@ import { FindCustomerQuery } from './dto/find-customer.query'
 import { CreateCustomerDto } from '@modules/customer/dto/create-customer.dto'
 
 @ApiTags('customer')
-@ApiBearerAuth()
+@ApiBearerAuth('authorization')
 @Controller('customer')
 export class CustomerController {
 	constructor(private readonly customerService: CustomerService) {}
 
-	@Roles(Role.Admin)
-	@UseGuards(AuthGuard)
-	@Get()
-	find(@Query() { id, email, phone }: FindCustomerQuery) {
-		if (id || email || phone) {
-			return this.customerService.find({ id, email, phone })
-		}
-
-		return this.customerService.findAll()
+	@Get(':id')
+	findById(@Param('id') id: string) {
+		return this.customerService.findById(id)
 	}
 
 	@Roles(Role.Admin)

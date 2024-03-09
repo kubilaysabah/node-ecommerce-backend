@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
 import { AdminService } from './admin.service'
 import { CreateAdminDto } from './dto/create-admin.dto'
@@ -8,14 +8,17 @@ import { UpdateAdminDto } from './dto/update-admin.dto'
 import { Roles } from '@decorators/role.decorator'
 import { Role } from '@enums/role.enum'
 import { AuthGuard } from '@guards/auth.guard'
+import { RolesGuard } from '@guards/roles.guard'
 
 @ApiTags('admin')
-@ApiBearerAuth()
+@ApiBearerAuth('authorization')
 @Controller('admin')
 export class AdminController {
 	constructor(private readonly adminService: AdminService) {}
 
-	@UseGuards(AuthGuard)
+	@ApiOperation({ summary: 'Create Admin' })
+	@ApiResponse({ status: 200, description: 'Create admin' })
+	@UseGuards(AuthGuard, RolesGuard)
 	@Roles(Role.Admin)
 	@Post()
 	create(@Body() createAdminDto: CreateAdminDto) {
@@ -32,8 +35,8 @@ export class AdminController {
 	@UseGuards(AuthGuard)
 	@Roles(Role.Admin)
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.adminService.find({ id })
+	findById(@Param('id') id: string) {
+		return this.adminService.findById(id)
 	}
 
 	@UseGuards(AuthGuard)

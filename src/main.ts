@@ -10,6 +10,8 @@ import { AppModule } from './app.module'
 // Interceptors
 import { LoggingInterceptor } from '@interceptors/logging.interceptor'
 import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
+
+
 ;(async (): Promise<void> => {
 	const app = await NestFactory.create(AppModule, {
 		snapshot: true,
@@ -50,7 +52,7 @@ import { NotFoundInterceptor } from '@interceptors/not-found.interceptor'
 		.addBearerAuth(
 			{
 				// I was also testing it without prefix 'Bearer ' before the JWT
-				description: `[just text field] Please enter token in following format: Bearer <JWT>`,
+				description: `Please enter token in following format: Bearer <JWT>`,
 				name: 'Authorization',
 				bearerFormat: 'Bearer', // I`ve tested not to use this field, but the result was the same
 				scheme: 'Bearer',

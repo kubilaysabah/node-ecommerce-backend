@@ -6,8 +6,8 @@ import { RegisterAuthDto } from './dto/register-auth.dto'
 import { LoginAuthDto } from './dto/login-auth.dto'
 
 import { BcryptService } from '@services/bcrypt.service'
-import { PrismaService } from '@services/prisma.service'
 
+import { AdminService } from '@modules/admin/admin.service'
 import { CustomerService } from '@modules/customer/customer.service'
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthService {
 		private jwtService: JwtService,
 		private bcryptService: BcryptService,
 		private customerService: CustomerService,
-		private prismaService: PrismaService,
+		private adminService: AdminService,
 	) {}
 
 	async register({
@@ -27,7 +27,11 @@ export class AuthService {
 		firstname,
 		lastname,
 	}: RegisterAuthDto): Promise<RegisterEntity> {
-		const findUser = await this.customerService.find({ email, phone })
+		const findUser = phone
+			? await this.customerService.findByPhone(phone)
+			: email
+				? await this.customerService.findByEmail(email)
+				: null
 
 		if (findUser) {
 			throw new HttpException('User already exists', 409)
@@ -56,8 +60,8 @@ export class AuthService {
 
 	@HttpCode(HttpStatus.OK)
 	async login({ email, password }: LoginAuthDto): Promise<string> {
-		const findCustomer = await this.prismaService.customer.findUnique({ where: { email } })
-		const findAdmin = await this.prismaService.admin.findUnique({ where: { email } })
+		const findCustomer = await this.customerService.findByEmail(email)
+		const findAdmin = await this.adminService.findByEmail(email)
 
 		if (!findCustomer && !findAdmin) {
 			throw new HttpException('User not found', 404)
@@ -84,6 +88,7 @@ export class AuthService {
 						firstname: findAdmin.firstname,
 						lastname: findAdmin.lastname,
 						image: findAdmin.image,
+						role_id: findAdmin,
 					},
 		)
 	}

@@ -8,7 +8,7 @@ import { AuthGuard } from '@guards/auth.guard'
 import { Role } from '@enums/role.enum'
 
 @ApiTags('role')
-@ApiBearerAuth()
+@ApiBearerAuth('authorization')
 @Controller('role')
 export class RoleController {
 	constructor(private readonly roleService: RoleService) {}
@@ -31,7 +31,7 @@ export class RoleController {
 	@UseGuards(AuthGuard)
 	@Get(':id')
 	find(@Param('id') id: string) {
-		return this.roleService.find({ id })
+		return this.roleService.findById(id)
 	}
 
 	@Roles(Role.Admin)

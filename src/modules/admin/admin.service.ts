@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common'
 
 import { CreateAdminDto } from './dto/create-admin.dto'
 import { UpdateAdminDto } from './dto/update-admin.dto'
-import { FindAdminDto } from './dto/find-admin.dto'
 
 import { Admin } from './entities/admin.entity'
 
@@ -22,8 +21,8 @@ export class AdminService {
 	) {}
 
 	async create({ image, email, phone, lastname, firstname, passwordAgain, password }: CreateAdminDto): Promise<Admin> {
-		const findAdmin = await this.find({ email, phone })
-		const findRole = await this.roleService.find({ name: 'admin' })
+		const findAdmin = email ? await this.findByEmail(email) : phone ? await this.findByPhone(phone) : null
+		const findRole = await this.roleService.findByName('admin')
 
 		if (findAdmin) {
 			throw new HttpException('Admin already exists', 400)
@@ -79,51 +78,35 @@ export class AdminService {
 	}
 
 	findAll(): Promise<Admin[]> {
-		return this.prisma.admin.findMany({
-			select: {
-				id: true,
-				role_id: true,
-				email: true,
-				phone: true,
-				firstname: true,
-				lastname: true,
-				image: true,
-				created_at: true,
-				updated_at: true,
-				password: true,
+		return this.prisma.admin.findMany()
+	}
+
+	findById(id: string) {
+		return this.prisma.admin.findUnique({
+			where: {
+				id,
 			},
 		})
 	}
 
-	async find({ id, email, phone }: FindAdminDto): Promise<Admin> {
-		const findAdmin = await this.prisma.admin.findFirst({
+	findByEmail(email: string) {
+		return this.prisma.admin.findFirst({
 			where: {
-				id,
-				phone,
 				email,
 			},
 		})
+	}
 
-		if (!findAdmin) {
-			throw new HttpException('Admin not found', 404)
-		}
-
-		return {
-			phone: findAdmin.phone,
-			email: findAdmin.email,
-			firstname: findAdmin.firstname,
-			lastname: findAdmin.lastname,
-			id: findAdmin.id,
-			role_id: findAdmin.role_id,
-			image: findAdmin.image,
-			password: findAdmin.password,
-		}
+	findByPhone(phone: string) {
+		return this.prisma.admin.findFirst({
+			where: {
+				phone,
+			},
+		})
 	}
 
 	async update(id: string, updateAdminDto: UpdateAdminDto) {
-		const findAdmin = await this.find({
-			id,
-		})
+		const findAdmin = await this.findById(id)
 
 		if (!findAdmin) {
 			throw new HttpException('Admin not found', 404)
@@ -138,7 +121,7 @@ export class AdminService {
 	}
 
 	async remove(id: string) {
-		const findAdmin = this.find({ id })
+		const findAdmin = this.findById(id)
 
 		if (!findAdmin) {
 			throw new HttpException('Admin not found', 404)

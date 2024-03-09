@@ -1,13 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common'
-import { FindRoleDto } from './dto/find-role.dto'
-
 import { PrismaService } from '@services/prisma.service'
 
 @Injectable()
 export class RoleService {
 	constructor(private prisma: PrismaService) {}
 	create(name: string) {
-		const role = this.find({ name })
+		const role = this.findByName(name)
 
 		if (role) {
 			throw new HttpException('Role already exists', 409)
@@ -24,10 +22,17 @@ export class RoleService {
 		return this.prisma.role.findMany()
 	}
 
-	find({ name, id }: FindRoleDto) {
-		return this.prisma.role.findFirst({
+	findById(id: string) {
+		return this.prisma.role.findUnique({
 			where: {
 				id,
+			},
+		})
+	}
+
+	findByName(name: string) {
+		return this.prisma.role.findFirst({
+			where: {
 				name: name.toLowerCase().trim(),
 			},
 		})

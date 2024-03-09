@@ -31,4 +31,19 @@ export class Customer {
 	@IsString()
 	@IsNotEmpty()
 	readonly password: string
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	readonly image: string
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	readonly gender: string
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	readonly birthdate: Date
 }

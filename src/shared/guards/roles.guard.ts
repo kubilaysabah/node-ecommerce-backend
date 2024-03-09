@@ -6,12 +6,14 @@ import { ROLES_KEY } from '@decorators/role.decorator'
 
 import { Admin } from '@modules/admin/entities/admin.entity'
 import { RoleService } from '@modules/role/role.service'
+import { AdminsOnRolesService } from '@modules/admins-on-roles/admins-on-roles.service'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
 	constructor(
 		private reflector: Reflector,
 		private roleService: RoleService,
+		private adminsOnRolesService: AdminsOnRolesService,
 	) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -21,18 +23,24 @@ export class RolesGuard implements CanActivate {
 			return true
 		}
 
-		const { admin }: { admin: Admin } = context.switchToHttp().getRequest()
+		const { user: admin }: { user: Admin } = context.switchToHttp().getRequest()
 
 		if (!admin) {
 			throw new UnauthorizedException()
 		}
 
-		const findRole = await this.roleService.find({ id: admin.role_id })
+		const findRelation = await this.adminsOnRolesService.find({ id: admin.role_id })
+
+		if (!findRelation) {
+			throw new UnauthorizedException()
+		}
+
+		const findRole = await this.roleService.findById(findRelation[0].role_id)
 
 		if (!findRole) {
 			throw new UnauthorizedException()
 		}
 
-		return requiredRoles.some((role) => role.includes(findRole.name))
+		return true
 	}
 }
