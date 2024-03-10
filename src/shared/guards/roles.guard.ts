@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
 			throw new UnauthorizedException()
 		}
 
-		const findRelation = await this.adminsOnRolesService.find({ id: admin.role_id })
+		const findRelation = await this.adminsOnRolesService.find({ id: admin.relation_id })
 
 		if (!findRelation) {
 			throw new UnauthorizedException()
