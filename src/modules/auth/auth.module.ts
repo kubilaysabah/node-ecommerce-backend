@@ -14,7 +14,7 @@ import { AdminsOnRolesService } from '@modules/admins-on-roles/admins-on-roles.s
 		JwtModule.register({
 			global: true,
 			secret: process.env.SECRET_KEY,
-			signOptions: { expiresIn: '60s' },
+			signOptions: { expiresIn: '4h' },
 		}),
 	],
 	controllers: [AuthController],

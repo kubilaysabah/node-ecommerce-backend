@@ -88,7 +88,7 @@ export class AuthService {
 						firstname: findAdmin.firstname,
 						lastname: findAdmin.lastname,
 						image: findAdmin.image,
-						role_id: findAdmin,
+						relation_id: findAdmin.relation_id,
 					},
 		)
 	}

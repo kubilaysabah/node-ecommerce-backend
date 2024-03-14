@@ -47,18 +47,6 @@ export class AdminService {
 				updated_at: new Date(),
 				password: await this.bcrypt.hash(password),
 			},
-			select: {
-				id: true,
-				role_id: true,
-				email: true,
-				phone: true,
-				firstname: true,
-				lastname: true,
-				image: true,
-				created_at: true,
-				updated_at: true,
-				password: true,
-			},
 		})
 
 		if (!createAdmin) {

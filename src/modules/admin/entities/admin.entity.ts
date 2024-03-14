@@ -29,7 +29,7 @@ export class Admin {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	readonly role_id: string
+	readonly relation_id: string
 
 	@ApiProperty({ required: false })
 	@IsString()

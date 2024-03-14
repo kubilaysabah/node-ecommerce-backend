@@ -17,17 +17,17 @@ model Role {
 }
 
 model Admin {
-  id         String         @id @default(cuid())
-  firstname  String
-  lastname   String
-  email      String         @unique
-  phone      String         @unique
-  image      String?
-  password   String
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
-  role_id    String?
-  role       AdminsOnRoles? @relation(fields: [role_id], references: [id])
+  id          String         @id @default(cuid())
+  firstname   String
+  lastname    String
+  email       String         @unique
+  phone       String         @unique
+  image       String?
+  password    String
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @updatedAt
+  relation_id String?
+  role        AdminsOnRoles? @relation(fields: [relation_id], references: [id])
 }
 
 model AdminsOnRoles {
